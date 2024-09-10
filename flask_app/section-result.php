@@ -1,7 +1,15 @@
 <?php
 session_start(); // เริ่มต้น session
 
-$url_home = './index.php';
+$table_name = $_SESSION['table_name'];
+$table_weeks_name = $_SESSION['table_weeks_name'];
+$subject_id = $_SESSION['subject_id'];
+
+//Create var Link
+$url_members = '../web_app/section/import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id);
+$url_attendance = '../web_app/section/attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
+$url_report = '../web_app/section/report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
+
 ?>
 
 <!DOCTYPE html>
@@ -13,8 +21,40 @@ $url_home = './index.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <title>Face Recognition Result</title>
     <style>
+        .navbar {
+            color: black;
+        }
+        .nav-item {
+            margin-left: 15px; /* ระยะห่างระหว่างแต่ละปุ่ม */
+        }
+        .navbar-custom .nav-link {
+                color: rgb(46, 46, 46);
+                padding-bottom: 5px;
+                position: relative;
+            }
+
+        .navbar-custom .nav-link::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 2px;
+            height: 4px; /* ปรับความหนาของเส้น */
+            background-color: #7124ff; /* สีของเส้นใต้ */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+            .navbar-custom .nav-link:hover::after,
+            .navbar-custom .nav-link.active::after {
+                width: 100%;
+            }
+
         /* Small devices (Phone 0-576px) */
         @media (max-width: 576px) {
+            .nav-item {
+                font-size: 13px !important;
+            }
             .container {
                 max-width: 475px;
                 margin: 50px auto;
@@ -34,8 +74,16 @@ $url_home = './index.php';
                 object-fit: contain; /* ขยายภาพให้พอดีกับกรอบ โดยรักษาสัดส่วนของภาพไว้ทั้งหมด ซึ่งอาจทำให้มีพื้นที่ว่าง */
             }
             .carousel-inner {
-                width: 375px; /* กำหนดความกว้างของภาพ */
+                max-width: 375px; /* กำหนดความกว้างของภาพ */
                 margin: auto; /* จัดกลาง */
+            }
+            .carousel-indicators li {
+                background-color: black; /* กำหนดสีของจุดที่แสดงตำแหน่ง */
+            }
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                background-color: #000; /* กำหนดสีของปุ่มลูกศร */
+                border-radius: 50px;
             }
             /* Right Sidebar */
             .right-group {
@@ -87,6 +135,7 @@ $url_home = './index.php';
             .carousel-control-prev-icon,
             .carousel-control-next-icon {
                 background-color: #000; /* กำหนดสีของปุ่มลูกศร */
+                border-radius: 50px;
             }
             .container {
                 max-width: 700px;
@@ -143,6 +192,7 @@ $url_home = './index.php';
             .carousel-control-prev-icon,
             .carousel-control-next-icon {
                 background-color: #000; /* กำหนดสีของปุ่มลูกศร */
+                border-radius: 50px;
             }
             #wrapper {
                 display: flex;
@@ -256,17 +306,19 @@ $url_home = './index.php';
         <!-- Page content wrapper-->
         <div class="page-content-wrapper">
 
-            <!-- Menu Bar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Menu Bar class "navbar-custom" -->
+            <nav class="navbar navbar-expand navbar-custom border-bottom">
+                <div class="navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                        <li class="nav-item active"><a class="nav-link" href="javascript:window.history.back()">Back</a></li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="<?php echo htmlspecialchars($url_home); ?>">Home</a>
-                        </li>                    
+                            <a class="nav-link" href="<?php echo htmlspecialchars($url_members); ?>">Manage Members</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="<?php echo htmlspecialchars($url_attendance); ?>">Attendance Check</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="<?php echo htmlspecialchars($url_report); ?>">Report daily</a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -332,7 +384,6 @@ $url_home = './index.php';
 
                         // สร้าง Carousel
                         echo "<div id='carouselExampleIndicators' class='carousel slide'>";
-                        echo "<ol class='carousel-indicators'>";
 
                         // สร้าง indicators ของ Carousel
                         $indicators = array();
@@ -341,12 +392,6 @@ $url_home = './index.php';
                             $indicators[] = $image_data;
                         }
 
-                        foreach ($indicators as $index => $data) {
-                            $active = $index === 0 ? 'active' : '';
-                            echo "<li data-target='#carouselExampleIndicators' data-slide-to='$index' class='$active'></li>";
-                        }
-
-                        echo "</ol>";
                         echo "<div class='carousel-inner'>";
 
                         // แสดงรูปภาพทั้งหมดใน Carousel

@@ -1,5 +1,31 @@
 /* Small devices (Phone 0-576px) */
 @media (max-width: 576px) { 
+    .nav-item {
+        font-size: 13px !important;
+    }
+    .navbar-custom .nav-link {
+        color: rgb(46, 46, 46);
+        padding-bottom: 5px;
+        position: relative;
+    }
+
+    .navbar-custom .nav-link::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        height: 4px; /* ปรับความหนาของเส้น */
+        background-color: #7124ff; /* สีของเส้นใต้ */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+    .navbar-custom .nav-link:hover::after,
+    .navbar-custom .nav-link.active::after {
+        width: 100%;
+    }
+
     /* Header details */
     .container {
         max-width: 415px;
@@ -30,12 +56,17 @@
     }
     /* More details */
     .container-count-std {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        
+        font-size: 12px;
+        font-weight: 500;
         height: 150px;
         width: 100%;
         padding: 30px;
         margin: 0px;
         background-color: #ffffff;
-        border: 1px solid black;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
     }
@@ -53,15 +84,24 @@
         font-size: 12px;
         padding: 6px 12px;
     }
+    .card {
+        width: 80px; 
+        height: 60px; 
+        object-fit: cover; 
+        border-radius: 5px;
+    }
+    .card-body {
+        padding: 10px;
+    }
     .del-mul-btn-container {
         display: flex;
         justify-content: flex-end; /* จัดตำแหน่งปุ่มให้ชิดขวา */
-        margin-bottom: 10px;
+        margin: 5px 0px 0px 0px;
     }    
     /* table custom */
     .table-container {
         width: 100%;  /* กำหนดความกว้างของตาราง */
-        height: 300px; /* กำหนดความสูงของตาราง */
+        height: auto; /* กำหนดความสูงของตาราง */
         overflow-x: auto; /* เปิด Scrollbar แนวนอนเมื่อเนื้อหายาวกว่าความกว้าง */
         overflow-y: auto; /* เปิด Scrollbar แนวตั้งเมื่อเนื้อหายาวกว่าความสูง */
     }
@@ -74,7 +114,7 @@
         text-decoration: none; /* ลบการขีดเส้นใต้ */
     }    
     table td {
-        font-size: 7px;
+        font-size: 8px;
         padding: 6px; /* กำหนด padding ภายในเซลล์ */
         border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
         text-align: center; /* จัดข้อความให้อยู่ซ้าย */
@@ -90,13 +130,13 @@
         width: 20px; /* Select / No */
     }
     th.col-2 {
-        width: 80px; /* Std_id */
+        width: 100px; /* Std_id */
     }
     th.col-3 {
-        width: 200px; /* Name */
+        width: 180px; /* Name */
     }
     th.col-4 {
-        width: 200px; /* Facty */
+        width: 160px; /* Facty */
     }
     .next-btn {
         font-size: 12px; /* ขนาดฟอนต์ */
@@ -109,7 +149,7 @@
     }
     .del_mul-btn {
         font-size: 10px !important;
-        padding: 5px 10px !important;
+        padding: 6px 12px !important;
         display: inline-block !important;
         width: 60px !important;
         text-align: center !important;
@@ -133,6 +173,29 @@
 
 /*Medium devices (tablets, 576px and up)*/
 @media (min-width: 576px) { 
+    .navbar-custom .nav-link {
+        color: rgb(46, 46, 46);
+        padding-bottom: 5px;
+        position: relative;
+    }
+
+    .navbar-custom .nav-link::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        height: 4px; /* ปรับความหนาของเส้น */
+        background-color: #7124ff; /* สีของเส้นใต้ */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+    .navbar-custom .nav-link:hover::after,
+    .navbar-custom .nav-link.active::after {
+        width: 100%;
+    }
+
     .container {
         max-width: 700px;
         margin: 50px auto;
@@ -157,13 +220,26 @@
         margin: 30px 0px 30px 0px ;
     }
     .container-count-std {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         min-width: 300px;
+
         margin: 50px auto;
         padding: 30px;
         background-color: #ffffff;
-        border: 1px solid black;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+    }
+    .card {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        border-radius: 15px;
+    }
+    .card-body {
+        padding: 20px;
     }
     /* Imort form */
     .container-form {
@@ -181,13 +257,12 @@
     .del-mul-btn-container {
         display: flex;
         justify-content: flex-end; /* จัดตำแหน่งปุ่มให้ชิดขวา */
-        margin-bottom: 10px;
-    }
+        margin: 5px 0px 0px 0px;
+    }    
     /* table custom */
     .table-container {
         width: 100%;  /* กำหนดความกว้างของตาราง */
-        height: 300px; /* กำหนดความสูงของตาราง */
-        overflow-x: auto; /* เปิด Scrollbar แนวนอนเมื่อเนื้อหายาวกว่าความกว้าง */
+        height: auto; /* กำหนดความสูงของตาราง */
         overflow-y: auto; /* เปิด Scrollbar แนวตั้งเมื่อเนื้อหายาวกว่าความสูง */
     }
     table th {
@@ -233,10 +308,10 @@
         margin: 3px;
     }
     .del_mul-btn {
-        font-size: 10px;
-        padding: 8px 16px;
+        font-size: 12px !important;
+        padding: 7px 14px !important;
         display: inline-block;
-        width: 80px;
+        width: 70px;
         text-align: center;
         line-height: 1.5;
         margin-bottom: 10px;
@@ -302,13 +377,25 @@
         margin: 30px 0px 30px 0px ;
     }
     .container-count-std {
+        display: flex;
+        justify-content: center;
+        align-items: top;
+
         min-width: 550px;
         margin: 50px auto;
         padding: 30px;
         background-color: #ffffff;
-        border: 1px solid black;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+    }
+    .card {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        border-radius: 15px;
+    }
+    .card-body {
+        padding: 20px;
     }
     .container-form {
         max-width: 300px;
@@ -321,13 +408,12 @@
     .del-mul-btn-container {
         display: flex;
         justify-content: flex-end; /* จัดตำแหน่งปุ่มให้ชิดขวา */
-        margin-bottom: 10px;
-    }
+        margin: 10px 0px 10px 0px;
+    }    
     /* table custom */
     .table-container {
         width: 100%;  /* กำหนดความกว้างของตาราง */
         height: auto; /* กำหนดความสูงของตาราง */
-        overflow-x: auto; /* เปิด Scrollbar แนวนอนเมื่อเนื้อหายาวกว่าความกว้าง */
         overflow-y: auto; /* เปิด Scrollbar แนวตั้งเมื่อเนื้อหายาวกว่าความสูง */
     }
     table th {
@@ -374,10 +460,10 @@
         margin: 3px;
     }
     .del_mul-btn {
-        font-size: 14px;
-        padding: 8px 16px;
+        font-size: 14px !important;
+        padding: 8px 16px !important;
         display: inline-block;
-        width: 100px;
+        width: 80px;
         text-align: center;
         line-height: 1.5;
         margin-bottom: 10px;

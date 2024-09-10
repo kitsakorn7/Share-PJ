@@ -1,180 +1,399 @@
-    /* Overlay style */
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: none; /* Hidden by default */
-        z-index: 998; /* Higher than content */
-    }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-    /* Sidebar hidden by default */
-    #wrapper.toggled #sidebar-wrapper {
-        left: 0; /* เมื่อเพิ่มคลาส toggled จะทำให้ Sidebar แสดงผล */
-    }
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}       
 
+.form-group {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.form-select {
+    width: 100%;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+tr:hover {
+    background-color: #ddd; /* Changes background on hover */
+}
+.no-courses {
+    font-size: 1.2em;
+    color: #555;
+    text-align: center;
+    margin-top: 20px;
+}
+.logout-link {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.logout-link:hover {
+    background-color: #0056b3;
+}
+ .btn-large {
+    font-size: 1.25rem; /* เพิ่มขนาดฟอนต์ */
+    padding: 0.75rem 1.25rem; /* เพิ่มขนาด Padding */
+}
+.btn-info {
+    display: block;
+    width: 100%;
+    max-width: 1500px; /* ขนาดความกว้างสูงสุดของปุ่ม */
+    padding: 20px;
+    font-size: 18px;
+    margin-bottom: 10px; /* ระยะห่างระหว่างปุ่ม */
+    text-align: center;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column; /* เรียงปุ่มในแนวตั้ง */
+    align-items: center;
+}
+
+.btn-details {
+    display: block;
+    width: 100%; /* ปรับขนาดความกว้างของปุ่ม */
+    margin: 10px 0; /* ระยะห่างระหว่างปุ่ม */
+    padding: 15px; /* ระยะห่างภายในปุ่ม */
+
+    font-size: 0.8rem; /* ขนาดตัวอักษรทั่วไป */
+    font-weight: 100;
+    color: #fff; /* สีตัวอักษร */
+    text-align: left; /* จัดข้อความในปุ่มให้ชิดซ้าย */
+    text-decoration: none; /* ลบเส้นขีดใต้ข้อความ */
+    border-radius: 5px; /* มุมปุ่มเป็นมน */
+    border: none;
+    box-sizing: border-box; /* ให้ขนาดของปุ่มรวมขอบและระยะห่างภายใน */
+}
+
+.subject-name {
+    font-size: 28px; /* ขนาดตัวอักษรสำหรับชื่อวิชา */
+    font-weight: bold; /* ทำให้ชื่อวิชาหนาขึ้น */
+}
+
+.btn-container-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-circle {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    border-radius: 8px; /* เพิ่มมุมมนให้ปุ่ม */
+}
+
+.btn-circle:hover {
+    background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อเมาส์เลื่อนมาที่ปุ่ม */
+    transform: scale(1.20); /* ขยายปุ่มเล็กน้อย */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่ม */
+}
+
+.circle-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white; /* สีข้อความในวงกลม */
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.circle-icon:hover {
+    transform: scale(1.1); /* ขยายวงกลมเล็กน้อยเมื่อเมาส์เลื่อนมาที่มัน */
+}
+
+.circle-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.course-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    text-align: start;
+}
+
+.subject-namee {
+    font-weight: 550;
+    font-size: 14px;
+}
+
+/* เเก้เเล้วววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววว*/
+.course-details-2 {
+    font-size: 0.5em;
+}
+/* กำหนดลักษณะของ sidebar-heading */
+.sidebar-heading {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info strong {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.profile-info small {
+    font-size: 0.6rem;
+    color: #666;
+}
+
+.responsive-div {
+    margin-left: 20px;
+    font-size: 1.2em; /* ขนาดตัวอักษร */
+}
+
+/* ปรับแต่งสำหรับหน้าจอขนาดเล็กมาก */
+@media screen and (max-width: 576px) {
+
+    .sidebar-heading {
+        padding: 10px;
+    }
     #sidebar-wrapper {
-        width: 300px;
-        background-color: #f8f9fa;
-        border-right: 1px solid #ddd;
-        position: fixed;
-        height: 100%;
-        top: 0;
-        left: -300px; /* ซ่อน Sidebar โดยค่าเริ่มต้น */
+    width: 300px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: -250px; /* Hide by default */
+    transition: all 0.3s ease;
+    overflow-y: auto; /* เพิ่มคุณสมบัติ overflow */
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Initially hidden */
+    z-index: 998; /* Higher than content */
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    left: 0; /* Show sidebar */
+    z-index: 999; /* Higher than overlay */
+}
+
+#wrapper.toggled .overlay {
+    display: block; /* Show overlay */
+}
+
+#wrapper.sb-sidenav-toggled #sidebar-wrapper {
+        left: 0;
+        z-index: 999; /* Higher than overlay */
         transition: left 0.3s ease;
-        overflow-x: auto;
     }
-    #sidebar-wrapper .sidebar-heading {
+
+    #wrapper.sb-sidenav-toggled .overlay {
+        display: block;
+        transition: left 0.3s ease;
+    }
+
+    .form-label {
+    font-size: 0.9em;
+    }
+}
+
+
+@media screen and (max-width: 576px) {
+    .sidebar-heading {
         display: flex;
+        gap: 5px;
         align-items: center;
-        padding: 20px;
-        border-bottom: 1px solid #ddd;
+        padding: 5px;
     }
 
-    /* Profile image and info */
+    #wrapper {
+        display: block;
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+
+    .hamburger .line {
+        width: 30px;
+        height: 3px;
+        background-color: #000;
+        margin: 5px 0;
+    }
+
     .profile-img {
-        border-radius: 50%;
-        width: 45px;
-        height: 45px;
-        margin-right: 15px;
-        object-fit: cover;
-    }
-
-    .profile-info {
-        display: flex;
-        flex-direction: column;
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+        margin-bottom: 10px;
     }
 
     .profile-info strong {
-        font-size: 0.9rem;
-        color: #333;
+        font-size: 1rem;
     }
 
     .profile-info small {
-        font-size: 0.6rem;
-        color: #666;
+        font-size: 0.7rem;
     }
 
-    /* Sidebar links */
     .list-group-item {
-        display: flex;
-        align-items: center;
-        font-size: 1rem;
-        padding: 10px 15px;
-        border: none;
-        background: transparent;
-        color: #000;
-        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        font-size: 1rem; /* ลดขนาดฟอนต์ในหน้าจอขนาดเล็ก */
     }
 
     .list-group-item i {
-        margin-right: 10px;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* ลดขนาดไอคอนในหน้าจอขนาดเล็ก */
     }
 
-    /* Hover effects for links */
-    .list-group-item-action:hover {
-        background-color: #f0f0f0;
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 6%;
-    }
-
-    /* Button container */
-    .btn-container-2 {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    /* Circular button */
-    .btn-circle {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        text-decoration: none;
-        color: black;
-        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        border-radius: 8px;
-    }
-
-    .btn-circle:hover {
-        background-color: #f0f0f0;
-        transform: scale(1.10);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .circle-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 15px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        font-size: 1em;
-        text-align: center;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .circle-text {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    /* Course information */
-    .course-info {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .info-row {
-        display: flex;
-        flex-direction: row;
-    }
-
-    .subject-namee {
-        font-weight: bold;
-        font-size: 1.2em;
+    .responsive-div {
+        margin-left: 20px; /* ลดระยะห่างให้เล็กลงในหน้าจอมือถือ */
+        font-size: 1rem; /* ปรับขนาดตัวอักษรให้อยู่ในขนาดที่เหมาะสม */
+        margin-bottom: 10px;
     }
 
     .course-details-2 {
-        font-size: 0.8em;
-    }
+    font-size: 0.7em;
+}
 
-    /* Logout button */
-    #logout-button {
-        display: flex;
-        align-items: center;
-        font-size: 1rem;
-        padding: 10px;
-        background-color: #ffffff;
-        color: #000000;
-        border: none;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    }
+}
 
-    #logout-button:hover {
-        background-color: #f0f0f0;
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+.filter-container {
+    display: flex;
+    justify-content: flex-end; /* จัดตำแหน่งให้ช่อง dropdown อยู่ทางขวา */
+    padding: 20px;
+    align-items: center; /* จัดตำแหน่งให้อยู่ในแนวเดียวกัน */
+    margin-bottom: 20px;
+}
+.form-group {
+    display: flex;
+    align-items: center; /* จัดตำแหน่งให้อยู่ในแนวเดียวกัน */
+    margin-left: 20px; /* ระยะห่างระหว่างข้อความป้ายกับช่อง dropdown */
+}
+.form-label {
+    margin-right: 10px; /* ระยะห่างระหว่างข้อความป้ายกับช่อง dropdown */
+    color: red;
+}
+.form-select {
+    max-width: 200px; /* ขนาดช่อง dropdown */
+}
+/* ปรับเปลี่ยนสไตล์ของปุ่มออกจากระบบให้ใหญ่ขึ้น */
+#logout-button {
+    display: flex;
+    align-items: center;
+    font-size: 1.20rem; /* เพิ่มขนาดตัวหนังสือ */
+    padding: 0.75rem 1.5rem; /* เพิ่มขนาดของ Padding */
+    background-color: #ffffff; /* สีพื้นหลังของปุ่มเป็นสีขาว */
+    color: #000000; /* สีตัวหนังสือเป็นสีดำ */
+    border: none; /* ไม่มีเส้นขอบ */
+    border-radius: 8px; /* ขอบปุ่มโค้งมน */
+    text-decoration: none; /* ลบเส้นขีดใต้ลิงก์ */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+#logout-button i {
+    width: 30px; /* กำหนดความกว้างของไอคอนให้เท่ากันทุกลิงก์ */
+    text-align: center; /* จัดไอคอนให้อยู่กึ่งกลาง */
+}
+#logout-button:hover {
+    background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อเมาส์เลื่อนมาที่ปุ่ม */
+    transform: scale(1.20); /* ขยายปุ่มเล็กน้อย */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่ม */
+}
+.text-center h5 {
+margin-bottom: 20px; /* ช่องว่างด้านล่างของข้อความ */
+}
+.list-group-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 0;
+    background: transparent; /* Transparent background */
+    color: #000; /* Black text */
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
 
-    #logout-button i {
-        margin-right: 10px;
-        width: 30px;
-        text-align: center;
-    }
+.list-group-item i {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-group-item-action:hover {
+    background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อเมาส์เลื่อนมาที่ปุ่ม */
+    transform: scale(1.20); /* ขยายปุ่มเล็กน้อย */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่ม */
+    border-radius: 6%;
+}

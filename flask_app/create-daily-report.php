@@ -90,7 +90,8 @@ $message = ($table_creation_result === true && $data_insertion_result === true) 
 $message = addslashes($message);
 
 // สร้าง URL สำหรับการเปลี่ยนเส้นทาง
-$redirect_url = "http://192.168.1.39/myproject/Web_app/section/attendance-check.php?table_name=$table_name_redirect_url&table_weeks_name=$table_weeks_name&id=$id";
+// Test in Computer (localhost) // Hotspot Hao (172.20.10.10) // WIFI House Tar (192.168.1.39)
+$redirect_url = "http://192.168.1.39/myproject/learn-reactjs-2024/web_app/section/attendance-check.php?table_name=$table_name_redirect_url&table_weeks_name=$table_weeks_name&id=$id";
 
 // ตรวจสอบ URL ที่สร้างขึ้น
 echo $redirect_url;

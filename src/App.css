@@ -35,10 +35,9 @@ body {
 }
 
 .left-side {
-  flex: 1;
   display: flex;
-  justify-content: center; /* จัดกลางแนวนอน */
-  align-items: center; /* จัดกลางแนวตั้ง */
+  justify-content: center;  
+  align-items: center;
   text-align: center;
   color: black
 }
@@ -51,20 +50,59 @@ body {
   background-repeat: no-repeat; /* ป้องกันการทำซ้ำของรูปภาพ */
 }
 
-/* Media Queries สำหรับขนาดหน้าจอ 480px หรือน้อยกว่า */
-@media (max-width: 480px) {
+/* Small devices (Phone 0-576px) */
+@media (max-width: 576px) {
   .container {
-    flex-direction: column; /* จัดให้เป็นคอลัมน์ */
+    flex-direction: column-reverse; /* จัดให้เป็นคอลัมน์ */
   }
-
-  .left-side, .right-side {
-    width: 100%; /* ให้กว้างเต็มพื้นที่ */
-    height: auto; /* ปรับความสูงให้เหมาะสม */
+  .left-side {
+    padding: 20px;
   }
 
   .right-side {
     background-size: cover; /* ให้รูปภาพครอบคลุมพื้นที่ทั้งหมด */
     background-position: center;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+/*Medium devices (tablets, 576px and up)*/
+@media (min-width: 576px) {
+  .left-side {
+    min-width: 20%;
+    padding: 20px;
+  }
+  .right-side {
+    background-size: cover; /* ให้รูปภาพครอบคลุมพื้นที่ทั้งหมด */
+    background-position: center;
+  }
+  h2 {
+    font-size: 23px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) { 
+  .left-side {
+    min-width: 20%;
+    padding: 20px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
   }
 }
 

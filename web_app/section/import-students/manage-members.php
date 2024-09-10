@@ -1,5 +1,5 @@
 <!-- Include createtable_manage_members.php -->
-<?php include('../component/createtable_manage_members.php'); ?>
+<?php include '../component/createtable_manage_members.php';?>
 
 <!-- Render Website -->
 <!DOCTYPE html>
@@ -10,145 +10,221 @@
     <title>Manage Student</title>
     <!-- เชื่อมโยงกับ Bootstrap CSS -->
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="../css/styles.css" rel="stylesheet" />  <!-- เเก้ path ลำดับให้ถูกต้อง -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../styles.css">
+     <!--เอา <link rel="stylesheet" href="../../styles.css"> ออก คือ CSS มันเปลี่ยนเเค่บราวเซอร์โหมดไม่ระบุตัวตนบราวเซอร์ปกติไม่เปลี่ยน--> 
     <link rel="stylesheet" href="../../section/navigation.css">
     <link rel="stylesheet" href="./manage-member_responsive.css">
     <link rel="stylesheet" href="./0_student_styles.css">
+    <style> /* มาใส่ในหน้านี้เเทน เนื่องจาก พอมาใส่หน้านี้มันกลับ เปลี่ยนทั้ง บราวเซอร์ปกติ เเละ บราวเซอร์โหมดไม่ระบุตัวตนเลย งงเหมือนกัน */
+
+        #wrapper {
+            display: flex;
+            width: 100%;
+        /* เอา height to full viewport height ออก */
+        }
+
+        .nav-item {
+            margin-left: 15px; /* ระยะห่างระหว่างแต่ละปุ่ม */
+        }
+        .page-content-wrapper {
+            flex: 1;
+        }
+
+        /* การตั้งค่าคอนเทนเนอร์ Form */
+        .container-form {
+            font-size: 12px;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        
+        /* ฟอร์มอัปโหลด */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #sidebarToggle {
+            background: transparent; /* ทำให้พื้นหลังของปุ่มเป็นใส */
+            border: none; /* เอาขอบออกจากปุ่ม */
+            padding: 0; /* เอาระยะห่างภายในปุ่มออก */
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อวางบนปุ่ม */
+        }
+
+        #sidebarToggle i {
+            font-size: 24px; /* กำหนดขนาดของไอคอน (ปรับขนาดตามต้องการ) */
+            color: #000; /* กำหนดสีของไอคอน (เปลี่ยนตามต้องการ) */
+        }
+
+        /* เพิ่ม hover effect ถ้าต้องการ */
+        #sidebarToggle:hover {
+            background: rgba(0, 0, 0, 0.1); /* เพิ่มพื้นหลังสีอ่อนเมื่อเลื่อนเมาส์มาบนปุ่ม */
+        }
+
+        .footer {
+            width: 100%;
+            text-align: center;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="d-flex" id="wrapper">
-
         <!-- Include Setting navigation -->
-        <?php include('../component/setting_nav.php'); ?>
+        <?php include '../component/setting_nav.php';?>
 
         <!-- Include navigation -->
-        <?php include('../component/navigation.php'); ?>
+        <?php include '../component/navigation.php';?>
 
-        <!-- Page content wrapper-->
-        <div class="page-content-wrapper">
-            <!-- Top navigation-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="container-fluid">
-                    <div class="d-flex align-items-center">
-                        <button class="btn" id="sidebarToggle" style="border: none; background-color: transparent; padding: 0;">
-                            <i class="fas fa-bars" style="font-size: 28px; color: black;"></i>
-                        </button>
-                        <span style="font-size: 1.3rem; margin-left: 20px; color: black;">Classroom</span>
-                    </div>
+            <!-- Menu Bar class "navbar-custom" -->
+            <nav class="navbar navbar-expand navbar-custom border-bottom">
+                <div class="navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="<?php echo htmlspecialchars($url_members); ?>">Manage Members</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="<?php echo htmlspecialchars($url_attendance); ?>">Attendance Check</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="<?php echo htmlspecialchars($url_report); ?>">Report daily</a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
+            <!-- End Menu Bar -->
 
             <!-- Page content-->
             <div class="container mt-5">
                 <!-- Include header details -->
-                <?php include('../component/header_details.php'); ?>   
+                <?php include '../component/header_details.php';?>
             </div>
 
             <div class="container-weeks">
                 <h1 class="mb-4">Manage Members</h1>
-                <hr>                
+                <hr>
 
                 <?php
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "projecta";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "projecta";
 
-                // สร้างการเชื่อมต่อกับ MySQL
-                $conn = new mysqli($servername, $username, $password, $dbname);
+// สร้างการเชื่อมต่อกับ MySQL
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-                $sql = "SELECT * FROM $table_name";
-                $result = $conn->query($sql);
+$sql = "SELECT * FROM $table_name";
+$result = $conn->query($sql);
 
-                // ตรวจสอบว่ามันักศึกษาใน section หรือไม่?
-                if ($result->num_rows > 0) {
+// ตรวจสอบว่ามันักศึกษาใน section หรือไม่?
+if ($result->num_rows > 0) {
 
-                    // แทรก container-header-weeks ก่อนที่จะแสดงผลตาราง
-                    // Container-header-weeks
-                    echo "<div class='container-header-weeks'>";
-                    echo "    <div class='container-count-std'></div>";
-                    
-                    echo "    <div class='container-form'>";
-                    echo "        <h4>Import Students</h4>";
-                    echo "        <form action='import.php' method='post' enctype='multipart/form-data'>";
-                    echo "            <input type='file' name='excel_file' accept='.xls,.xlsx' required>";
-                    echo "            <input type='hidden' name='table_name' value='" . htmlspecialchars($table_name) . "'>";
-                    echo "            <button type='submit'>Import</button>";
-                    echo "        </form>";
-                    echo "    </div>";
-                    echo "</div>";
-                    // End Container-header-weeks
-                    
-                    echo "<h5>Student List</h5>";
-                    echo "<hr>";
+    // แทรก container-header-weeks ก่อนที่จะแสดงผลตาราง
+    // Container-header-weeks
+    echo "<div class='container-header-weeks'>";
+    echo "    <div class='container-form'>";
+    echo "        <h4>Import Students</h4>";
+    echo "        <form action='import.php' method='post' enctype='multipart/form-data'>";
+    echo "            <input type='file' name='excel_file' accept='.xls,.xlsx' required>";
+    echo "            <input type='hidden' name='table_name' value='" . htmlspecialchars($table_name) . "'>";
+    echo "            <button type='submit'>Import</button>";
+    echo "        </form>";
+    echo "    </div>";
+    echo "</div>";
+    // End Container-header-weeks
 
-                    // Show members content 
-                    echo "<form id='deleteForm' action='delete-multiple-members.php' method='POST'>"; // เริ่มฟอร์มที่สองสำหรับตาราง
-                    echo "<div class='del-mul-btn-container'>"; // เริ่ม div ที่ครอบปุ่มเพื่อจัดให้อยู่ชิดขวา
-                    echo "<button type='submit' class='del_mul-btn'>Delete</button>"; // ปุ่มลบหลายรายการ
-                    echo "</div>"; // ปิด div ที่ครอบปุ่ม
+    echo "<h6 class='mt-2'>Members</h6>";
+    echo "<hr class='mt-0 mb-2'>";
 
-                    echo "<div class='table-container'>";
-                    echo "<table class='table table-striped table-bordered'>";
-                    echo "<thead class='thead-dark'><tr><th class='col-1'>Select all<br><input type='checkbox' id='select-all' class='mt-2'></th><th class='col-1'>No</th><th class='col-2'>Student Number</th><th class='col-3'>Name</th><th class='col-4'>Faculty (Branch)</th></tr></thead>";
-                    echo "<tbody>";
+    // Show members content
+    echo "<form id='deleteForm' action='delete-multiple-members.php' method='POST'>"; // เริ่มฟอร์มที่สองสำหรับตาราง
+    echo "<div class='del-mul-btn-container'>"; // เริ่ม div ที่ครอบปุ่มเพื่อจัดให้อยู่ชิดขวา
+    echo "<button type='submit' class='del_mul-btn'>Delete</button>"; // ปุ่มลบหลายรายการ
+    echo "</div>"; // ปิด div ที่ครอบปุ่ม
 
-                    // แสดงรายชื่อนักศึกษาใน section หากมี
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td><input type='checkbox' name='ids[]' value='" . $row['id'] . "'></td>";
-                        echo "<td>" . $row['id'] . "</td>";
-                        echo "<td>" . $row['student_number'] . "</td>";
-                        echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-                        echo "<td>" . $row['Faculty'] . " - " . $row['Field_of_study'] . "</td>";
-                        echo "</tr>";
-                    }
-                    echo "</tbody></table>";
-                    echo "</div>";
+    echo "<div class='table-container'>";
+    echo "<table class='table table-striped table-bordered'>";
+    echo "<thead class='thead-dark'><tr><th class='col-1'>Select all<br><input type='checkbox' id='select-all' class='mt-2'></th><th class='col-1'>No</th><th class='col-2'>Student Number</th><th class='col-3'>Name</th><th class='col-4'>Faculty (Branch)</th></tr></thead>";
+    echo "<tbody>";
 
-                    echo "<input type='hidden' name='table_name' value='$table_name'>";
-                    echo "</form>"; // ปิดฟอร์ม
-                    // End members content 
+    // แสดงรายชื่อนักศึกษาใน section หากมี
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td><input type='checkbox' name='ids[]' value='" . $row['id'] . "'></td>";
+        echo "<td>" . $row['id'] . "</td>";
+        echo "<td>" . $row['student_number'] . "</td>";
+        echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
+        echo "<td>" . $row['Faculty'] . " - " . $row['Field_of_study'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+    echo "</div>";
 
-                    echo "<br>";
-                    echo "<div class='text-center'>";
-                    echo "<a class='btn btn-primary next-btn' href='$url_attendance'>Next</a>";
-                    echo "</div>";
+    echo "<input type='hidden' name='table_name' value='$table_name'>";
+    echo "</form>"; // ปิดฟอร์ม
+    // End members content
 
-                    } else {
-                        // การแสดงผลส่วน Import Student กรณีที่ไม่มีนักศึกษาใน section                     
-                        echo "<div class='container-members-fluid mt-5'>";
-                        echo "<button class='btn btn-primary' id='user-tie'>";
-                        echo "<i class='fa-solid fa-user-tie'></i> <!-- Icon -->";
-                        echo "</button>";
-                        echo "<br>";
-                        echo "Manage members to begin attendance check on the next page.";
+    echo "<br>";
+    echo "<div class='text-center'>";
+    echo "<a class='btn btn-primary next-btn' href='$url_attendance'>Next</a>";
+    echo "</div>";
 
-                        // Import Members Btn มี js "click" ซึ่งทำให้เลือกไฟล์ xlsx ได้เลย   
-                        echo "<div class='button-members-fluid'>";
-                        echo "<button class='btn btn-primary' id='url_Import_members'>Import Members</button>"; //Button
+} else {
+    // การแสดงผลส่วน Import Student กรณีที่ไม่มีนักศึกษาใน section
+    echo "<div class='container-members-fluid mt-5'>";
+    echo "<button class='btn btn-primary' id='user-tie'>";
+    echo "<i class='fa-solid fa-user-tie'></i> <!-- Icon -->";
+    echo "</button>";
+    echo "<br>";
+    echo "Manage members to begin attendance check on the next page.";
 
-                        //Form
-                        echo "<form id='importForm' action='import.php' method='post' enctype='multipart/form-data' style='display:none;'>";
-                        echo "<input type='file' id='excelFile' name='excel_file' accept='.xls,.xlsx' required>";
-                        echo "<input type='hidden' name='table_name' value='" . htmlspecialchars($table_name) . "'>";
-                        echo "</form>";
+    // Import Members Btn มี js "click" ซึ่งทำให้เลือกไฟล์ xlsx ได้เลย
+    echo "<div class='button-members-fluid'>";
+    echo "<button class='btn btn-primary' id='url_Import_members'>Import Members</button>"; //Button
 
-                        echo "</div>";
+    //Form
+    echo "<form id='importForm' action='import.php' method='post' enctype='multipart/form-data' style='display:none;'>";
+    echo "<input type='file' id='excelFile' name='excel_file' accept='.xls,.xlsx' required>";
+    echo "<input type='hidden' name='table_name' value='" . htmlspecialchars($table_name) . "'>";
+    echo "</form>";
 
-                        echo "</div>";
-                    }
+    echo "</div>";
 
-                    $conn->close();
-                    ?>
+    echo "</div>";
+}
+
+$conn->close();
+?>
                     </div>
+
                     <!-- End Page content-->
 
                     <!-- Bootstrap Modal for confirmation -->
@@ -188,6 +264,7 @@
                     </div>
                     </div>
 
+
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
                     <script>
@@ -226,12 +303,12 @@
                         document.getElementById('deleteForm').submit(); // ส่งฟอร์ม
                     }
                     </script>
-                    
+
             <!-- Include footer -->
-            <?php include('../component/footer_details.php'); ?>
+            <?php include '../component/footer_details.php';?>
 
         </div>
-        <!-- End Page content wrapper--> 
+        <!-- End Page content wrapper-->
 
     </div>
     <!-- เชื่อมโยงกับ Bootstrap JS และ jQuery -->
@@ -254,9 +331,25 @@
     });
     </script>
     <script>
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('wrapper').classList.toggle('toggled');
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var sidebarToggle = document.getElementById('sidebarToggle');
+    var body = document.body;
+    var wrapper = document.getElementById('wrapper');
+    var overlay = document.getElementById('overlay');
+
+    // Toggle sidebar visibility when button is clicked
+    sidebarToggle.addEventListener('click', function () {
+        wrapper.classList.toggle('toggled');
+        overlay.style.display = wrapper.classList.contains('toggled') ? 'block' : 'none';
+    });
+
+    // Hide sidebar and overlay when overlay is clicked
+    overlay.addEventListener('click', function () {
+        body.classList.remove('sb-sidenav-toggled');
+        wrapper.classList.remove('toggled');
+        overlay.style.display = 'none';
+    })
+    });
+</script>
 </body>
 </html>

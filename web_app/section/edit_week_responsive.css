@@ -1,5 +1,6 @@
-/* Small devices (Phone 0-576px) */
-@media (max-width: 576px) { 
+ /* Small devices (Phone 0-576px) */
+ @media (max-width: 576px) {
+    /* Header details */
     .container {
         max-width: 415px;
         margin: 50px auto;
@@ -8,17 +9,50 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         text-align: start;
-        font-size:  12px;
     }
-    .container input {
-        font-size:  12px;
+    /* Content */
+    .container-header-weeks {
+        max-width: 415px;
+        display: flex;
+        flex-direction: column;
+        margin: 50px auto;
+        gap: 25px;
     }
-    /* Action Btn */
-    .custom-btn {
+    /* Condition Attendance */
+    .container-form {
+        width: 100%;
+        margin: 0px;
+        padding: 30px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    .container-form p {
         font-size: 12px;
-        width:  70px;
-        padding: 6px 12px;
-        margin: 2px;
+    }
+    /* Upload images */
+    .container-members-fluid {
+        width: 100%;
+        padding: 30px;
+        margin: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+    }
+    .container-members-fluid p {
+        font-size: 13px;
+    }
+    /* Detection Btn */
+    #url_Face_detection {
+        width: 160px; /* ขนาดของ Import members Btn */
+        padding: 10px 20px;
+    }
+    /* Reset Btn */
+    #resetBtn {
+        width: 80px; /* ขนาดของ Import members Btn */
+        padding: 10px 20px;
+        margin-right: 5px;
     }
     .footer {
         font-size: 12px;
@@ -26,7 +60,8 @@
 }
 
 /*Medium devices (tablets, 576px and up)*/
-@media (min-width: 576px) { 
+@media (min-width: 576px) {
+    /* Header details */
     .container {
         max-width: 700px;
         margin: 50px auto;
@@ -36,10 +71,78 @@
         border-radius: 10px;
         text-align: start;
     }
+    /* Content */
+    .container-header-weeks {
+        max-width: 700px;
+        display: flex;
+        gap: 15px;
+        margin: 50px auto;
+    }
+    /* Condition Attendance */
+    .container-form {
+        width: 475px;
+        padding: 30px;
+        margin: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    .container-form p {
+        font-size: 14px;
+    }
+    /* Upload images */
+    .container-members-fluid {
+        width: 475px;
+        padding: 30px;
+        margin: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+    }
+    .container-members-fluid p {
+        font-size: 14px;
+    }
+    /* Detection Btn */
+    #url_Face_detection {
+        width: 160px; /* ขนาดของ Import members Btn */
+        padding: 10px 20px;
+    }
+    /* Reset Btn */
+    #resetBtn {
+        width: 80px; /* ขนาดของ Import members Btn */
+        padding: 10px 20px;
+        margin-right: 5px;
+    }
 }
 
 /*Large devices (desktops, 992px and up)*/
-@media (min-width: 992px) { 
+@media (min-width: 992px) {
+    .navbar-custom .nav-link {
+        color: rgb(46, 46, 46);
+        padding-bottom: 5px;
+        position: relative;
+    }
+
+    .navbar-custom .nav-link::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        height: 4px; /* ปรับความหนาของเส้น */
+        background-color: #7124ff; /* สีของเส้นใต้ */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+
+    .navbar-custom .nav-link:hover::after,
+    .navbar-custom .nav-link.active::after {
+        width: 100%;
+    }
+
+    /* Header details */
     .container {
         max-width: 1000px;
         margin: 50px auto;
@@ -49,4 +152,49 @@
         border-radius: 10px;
         text-align: start;
     }
+    /* Content */
+    .container-header-weeks {
+        display: flex;
+        max-width: 1000px;
+        gap: 15px;
+        margin: 50px auto;
+    }
+    /* Condition Attendance */
+    .container-form {
+        width: 40%;
+        padding: 30px;
+        margin: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    /* Upload images */
+    .container-members-fluid {
+        width: 60%;
+        padding: 30px;
+        margin: 0px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+    }
+    /* Detection Btn */
+    #url_Face_detection {
+        width: 350px; /* ขนาดของ Import members Btn */
+        padding: 10px 20px;
+    }
+    /* Reset Btn */
+    #resetBtn {
+        width: 100px; /* ขนาดของ Import members Btn */
+        padding: 10px 20px;
+        margin-right: 5px;
+    }
+}
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }

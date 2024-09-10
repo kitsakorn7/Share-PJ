@@ -16,6 +16,7 @@ if (!empty($userEmail)) {
 // ตรวจสอบว่าผู้ใช้มีการล็อกอินหรือไม่
 $isLoggedIn = !empty($userEmail);
 
+// Logout Bug!
 $logoutUrl = $isLoggedIn ? 'http://localhost:5173/' : '#';
 
 if (isset($_GET['logout'])) {
@@ -30,7 +31,8 @@ if (isset($_GET['logout'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Timetable</title>
+    <title>Calendar with Current Date</title>
+    <link rel="stylesheet" href="styles.css">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/knowledge.png" />
 
@@ -48,7 +50,7 @@ if (isset($_GET['logout'])) {
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 0 auto;a
         }
 
         .table-container {
@@ -259,7 +261,6 @@ if (isset($_GET['logout'])) {
     </style>
 </head>
 <body>
-
 <div class="d-flex" id="wrapper">
 <div class="overlay" id="overlay"></div> <!-- เพิ่ม overlay -->
 
@@ -282,7 +283,7 @@ if (isset($_GET['logout'])) {
         <br>
 
         <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="addtable.php" style="font-size: 1rem;">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="http://localhost/myproject/learn-reactjs-2024/course-app/addtable.php" style="font-size: 1rem;">
                 <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;"></i> HOME
             </a>
             <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="http://localhost/myproject/learn-reactjs-2024/calendar/index.php" style="font-size: 1rem;">
@@ -315,36 +316,29 @@ if (isset($_GET['logout'])) {
             <!-- Left Bug! -->
             </div>
         </nav>
-
-        <!-- Page content -->
-        <div class="container mt-5">
+            
+         <!-- Page content -->
+         <div class="container mt-5">
             <!-- Topic -->
             <div class="d-flex align-items-center mb-4">
-                <h1>JOIN CLASSROOM</h1>
+                <h1 class="me-4" >Calendar</h1>
             </div>
     <hr>
     <br>
     <br>
-    <br>
-            <div class="table-container">
-                <div class="text-center mb-3">
-                    <h5>Click "Join class" to get start!</h5>
-                </div>
-                <!-- Table content with only button -->
-                <div class="container mt-5">
-                    <div class="d-flex justify-content-center">
-                        <form action="tabledetails.php" method="POST">
-                            <input type="hidden" name="action" value="create_table">
-                            <button type="submit" class="btn btn-primary btn-large">Join Class</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+   
+    <div class="calendar">
+        <header class="calendar-header">
+            <button id="prevMonth" class="nav-button">&#10094;</button>
+            <h1 id="monthYear"></h1>
+            <button id="nextMonth" class="nav-button">&#10095;</button>
+        </header>
+        <div class="calendar-grid">
+            <!-- Days will be added dynamically here -->
         </div>
-<br>
-<br>
-<br>
-        <script src="js/scripts.js"></script>
+    </div>
+    <script src="script.js"></script>
+    <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://apis.google.com/js/api.js"></script>
         <script>

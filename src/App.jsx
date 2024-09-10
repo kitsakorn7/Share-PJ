@@ -31,10 +31,12 @@ function App() {
     console.log('failed', res);
   }
 
+  // 192.168.1.39 
+  
   const getRedirectUrl = (profile) => {
     const baseUrl = profile.email.endsWith('@gmail.com')
-      ? 'http://localhost/myproject/index.php' // @gmail
-      : 'http://localhost/myproject/learn-reactjs-2024/course-app/addtable.php'; // @mail.rmutk.ac.th // Teacher Page
+      ? 'http://192.168.1.39/myproject/learn-reactjs-2024/web_app/admin/admin_home.php' // @gmail
+      : 'http://192.168.1.39/myproject/learn-reactjs-2024/course-app/addtable.php'; // @mail.rmutk.ac.th // Teacher Page
   
     const params = new URLSearchParams({
       user: profile.email,
@@ -52,7 +54,7 @@ function App() {
           <div>
             <h2 className="title">Welcome to Website</h2>
             <h3 className="title">TIME ATTENDANCE SYSTEM WITH FACE RECOGNITION</h3>
-            <br /><br />
+            <br />
             <GoogleLogin
               clientId={clientId}
               buttonText="Sign in with Google"

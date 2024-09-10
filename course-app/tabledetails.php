@@ -167,6 +167,7 @@ usort($courses, function ($a, $b) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
@@ -183,7 +184,7 @@ usort($courses, function ($a, $b) {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* ปรับให้ตารางเริ่มแสดงจากทางด้านซ้าย ถ้าเป็น center มันอยู่กลางนะเเต่มันเเสดงข้อมูลในตารางไม่ครบ ข้อมูล ID */
             margin-top: 20px;
             padding: 20px;
             border-radius: 8px;
@@ -198,6 +199,7 @@ usort($courses, function ($a, $b) {
             font-size: 24px;
             color: #333;
             margin-bottom: 20px;
+            align-items: center; 
             text-align: center;
             border-bottom: 2px solid #007bff;
             border-width: 100%;
@@ -217,8 +219,208 @@ usort($courses, function ($a, $b) {
             white-space: nowrap; /* ป้องกันการตัดคำ */
         }
 
+        .footer {
+            width: 100%;
+            text-align: center;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }       
+        
+        .form-group {
+            margin-bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-label{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0;
+        }
+
+        .form-select {
+            width: 100%;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd; /* Changes background on hover */
+        }
+        .no-courses {
+            font-size: 1.2em;
+            color: #555;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout-link {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .logout-link:hover {
+            background-color: #0056b3;
+        }
+         .btn-large {
+            font-size: 1.25rem; /* เพิ่มขนาดฟอนต์ */
+            padding: 0.75rem 1.25rem; /* เพิ่มขนาด Padding */
+        }
+        .btn-info {
+            display: block;
+            width: 100%;
+            max-width: 1500px; /* ขนาดความกว้างสูงสุดของปุ่ม */
+            padding: 20px;
+            font-size: 18px;
+            margin-bottom: 10px; /* ระยะห่างระหว่างปุ่ม */
+            text-align: center;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column; /* เรียงปุ่มในแนวตั้ง */
+            align-items: center;
+        }
+
+        .btn-details {
+            display: block;
+            width: 100%; /* ปรับขนาดความกว้างของปุ่ม */
+            margin: 10px 0; /* ระยะห่างระหว่างปุ่ม */
+            padding: 15px; /* ระยะห่างภายในปุ่ม */
+
+            font-size: 0.8rem; /* ขนาดตัวอักษรทั่วไป */
+            font-weight: 100;
+            color: #fff; /* สีตัวอักษร */
+            text-align: left; /* จัดข้อความในปุ่มให้ชิดซ้าย */
+            text-decoration: none; /* ลบเส้นขีดใต้ข้อความ */
+            border-radius: 5px; /* มุมปุ่มเป็นมน */
+            border: none;
+            box-sizing: border-box; /* ให้ขนาดของปุ่มรวมขอบและระยะห่างภายใน */
+        }
+
+        .subject-name {
+            font-size: 28px; /* ขนาดตัวอักษรสำหรับชื่อวิชา */
+            font-weight: bold; /* ทำให้ชื่อวิชาหนาขึ้น */
+        }
+
+        .btn-container-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-circle {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px; /* เพิ่มมุมมนให้ปุ่ม */
+        }
+
+        .btn-circle:hover {
+            background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อเมาส์เลื่อนมาที่ปุ่ม */
+            transform: scale(1.20); /* ขยายปุ่มเล็กน้อย */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่ม */
+        }
+
+        .circle-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white; /* สีข้อความในวงกลม */
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .circle-icon:hover {
+            transform: scale(1.1); /* ขยายวงกลมเล็กน้อยเมื่อเมาส์เลื่อนมาที่มัน */
+        }
+
+        .circle-text {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .course-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: start;
+            text-align: start;
+        }
+
+        .subject-namee {
+            font-weight: 550;
+            font-size: 14px;
+        }
+
+        /* เเก้เเล้วววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววว*/
+        .course-details-2 {
+            font-size: 0.5em;
+        }
+        /* กำหนดลักษณะของ sidebar-heading */
+        .sidebar-heading {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .profile-img {
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-info strong {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .profile-info small {
+            font-size: 0.6rem;
+            color: #666;
+        }
+
+        .responsive-div {
+            margin-left: 20px;
+            font-size: 1.2em; /* ขนาดตัวอักษร */
+        }
+
         /* ปรับแต่งสำหรับหน้าจอขนาดเล็กมาก */
-        @media screen and (max-width: 580px) {
+        @media screen and (max-width: 576px) {
 
             .sidebar-heading {
                 padding: 10px;
@@ -269,6 +471,7 @@ usort($courses, function ($a, $b) {
 
             .table-container {
                 padding: 10px;
+                max-width: 100%;
             }
 
             .table-title {
@@ -277,7 +480,7 @@ usort($courses, function ($a, $b) {
 
             .table th, .table td {
                 font-size: 0.8em;
-                padding: 5px;
+                padding: 10px;
             }
 
             .table-title {
@@ -289,198 +492,13 @@ usort($courses, function ($a, $b) {
             }
         }
 
-        .form-group {
-            margin-bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
-        .form-label{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 0;
-        }
-
-        .form-select {
-            width: 100%;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #ddd; /* Changes background on hover */
-        }
-        .no-courses {
-            font-size: 1.2em;
-            color: #555;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .logout-link {
-            display: inline-block;
-            margin: 10px 0;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .logout-link:hover {
-            background-color: #0056b3;
-        }
-         .btn-large {
-        font-size: 1.25rem; /* เพิ่มขนาดฟอนต์ */
-        padding: 0.75rem 1.25rem; /* เพิ่มขนาด Padding */
-        }
-        .btn-info {
-            display: block;
-            width: 100%;
-            max-width: 1500px; /* ขนาดความกว้างสูงสุดของปุ่ม */
-            padding: 20px;
-            font-size: 18px;
-            margin-bottom: 10px; /* ระยะห่างระหว่างปุ่ม */
-            text-align: center;
-        }
-
-        .btn-container {
-    display: flex;
-    flex-direction: column; /* เรียงปุ่มในแนวตั้ง */
-    align-items: center;
-        }
-
-
-        .btn-details {
-            display: block;
-            width: 100%; /* ปรับขนาดความกว้างของปุ่ม */
-            margin: 10px 0; /* ระยะห่างระหว่างปุ่ม */
-            padding: 15px; /* ระยะห่างภายในปุ่ม */
-            font-size: 16px; /* ขนาดตัวอักษรทั่วไป */
-            color: #fff; /* สีตัวอักษร */
-            text-align: left; /* จัดข้อความในปุ่มให้ชิดซ้าย */
-            text-decoration: none; /* ลบเส้นขีดใต้ข้อความ */
-            border-radius: 5px; /* มุมปุ่มเป็นมน */
-            border: none;
-            box-sizing: border-box; /* ให้ขนาดของปุ่มรวมขอบและระยะห่างภายใน */
-        }
-
-
-
-        .subject-name {
-            font-size: 50px; /* ขนาดตัวอักษรสำหรับชื่อวิชา */
-            font-weight: bold; /* ทำให้ชื่อวิชาหนาขึ้น */
-        }
-
-        .btn-container-2 {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-circle {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            text-decoration: none;
-            color: black;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            border-radius: 8px; /* เพิ่มมุมมนให้ปุ่ม */
-        }
-
-        .btn-circle:hover {
-            background-color: #f0f0f0; /* เปลี่ยนสีพื้นหลังเมื่อเมาส์เลื่อนมาที่ปุ่ม */
-            transform: scale(1.20); /* ขยายปุ่มเล็กน้อย */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้ปุ่ม */
-        }
-
-        .circle-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 15px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white; /* สีข้อความในวงกลม */
-            font-weight: bold;
-            font-size: 1em;
-            text-align: center;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .circle-icon:hover {
-            transform: scale(1.1); /* ขยายวงกลมเล็กน้อยเมื่อเมาส์เลื่อนมาที่มัน */
-        }
-
-        .circle-text {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .course-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-row {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .subject-namee {
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        /* เเก้เเล้วววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววววว*/
-        .course-details-2 {
-            font-size: 0.5em;
-        }
-            /* กำหนดลักษณะของ sidebar-heading */
-        .sidebar-heading {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .profile-img {
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            margin-right: 15px;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-info strong {
-            font-size: 0.9rem;
-            color: #333;
-        }
-
-        .profile-info small {
-            font-size: 0.6rem;
-            color: #666;
-        }
-
-        .responsive-div {
-            margin-left: 20px;
-            font-size: 1.2em; /* ขนาดตัวอักษร */
-        }
-
-        @media screen and (max-width: 640px) {
+        @media screen and (max-width: 576px) {
             .sidebar-heading {
+                display: flex;
+                gap: 5px;
+                align-items: center;
                 padding: 5px;
-                flex-direction: column;
-                align-items: flex-start;
             }
 
             #wrapper {
@@ -507,11 +525,11 @@ usort($courses, function ($a, $b) {
             }
 
             .profile-info strong {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
 
             .profile-info small {
-                font-size: 0.6rem;
+                font-size: 0.7rem;
             }
 
             .list-group-item {
@@ -524,7 +542,8 @@ usort($courses, function ($a, $b) {
 
             .responsive-div {
                 margin-left: 20px; /* ลดระยะห่างให้เล็กลงในหน้าจอมือถือ */
-                font-size: 1em; /* ปรับขนาดตัวอักษรให้อยู่ในขนาดที่เหมาะสม */
+                font-size: 1rem; /* ปรับขนาดตัวอักษรให้อยู่ในขนาดที่เหมาะสม */
+                margin-bottom: 10px;
             }
 
             .course-details-2 {
@@ -621,7 +640,7 @@ usort($courses, function ($a, $b) {
                 <img src="<?php echo $userImage; ?>" alt="User Profile" class="profile-img">
             <?php endif;?>
             <div class="profile-info">
-                <strong><?php echo $isLoggedIn ? $userName : 'Project'; ?></strong>
+                <strong><?php echo $isLoggedIn ? $userName : 'Testing'; ?></strong>
                 <?php if ($isLoggedIn): ?>
                     <small><?php echo $userEmail; ?></small>
                 <?php endif;?>
@@ -629,16 +648,15 @@ usort($courses, function ($a, $b) {
         </div>
         <br>
         <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="addtable.php" style="font-size: 1rem; ">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="./addtable.php" style="font-size: 1rem; ">
                 <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;" ></i> HOME
             </a>
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="http://localhost/myproject/calendar.php" style="font-size: 1rem;">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../calendar/indext.php" style="font-size: 1rem;">
                 <i class="fas fa-calendar fa-lg" style="font-size: 1.5rem; margin-left: 10px;"></i> CALENDAR
             </a>
         </div>
-        <br>
         <hr>
-        <div class="responsive-div" style="margin-left: 30px;">ENROLLED</div>
+        <div class="responsive-div" style="margin-left: 23px;">ENROLLED</div>
             <div class="btn-container-2">
                 <?php
                 // Courses list in Menu
@@ -701,23 +719,23 @@ usort($courses, function ($a, $b) {
     <hr>
     <!-- ส่วนของ HTML -->
     <div class="filter-container">
-            <form action="tabledetails.php" method="GET" class="mb-3">
-                <div class="form-group">
-                    <label for="academic_semester" class="form-label">SEMESTER:</label>
-                    <select id="academic_semester" name="academic_semester" class="form-select" onchange="this.form.submit()">
-                        <option value="">Select Academic Year & Semester</option>
-                        <?php foreach ($academicSemesters as $row): ?>
-                            <option value="<?=htmlspecialchars($row['academic_year']) . '-' . htmlspecialchars($row['semester'])?>"
-                                <?=isset($_GET['academic_semester']) && $_GET['academic_semester'] == htmlspecialchars($row['academic_year']) . '-' . htmlspecialchars($row['semester']) ? 'selected' : ''?>>
-                                <?=htmlspecialchars($row['semester'])?> / <?=htmlspecialchars($row['academic_year'])?>
-                            </option>
-                        <?php endforeach;?>
-                    </select>
-                </div>
-            </form>
-        </div>
+        <form action="tabledetails.php" method="GET" class="mb-3">
+            <div class="form-group">
+                <select id="academic_semester" name="academic_semester" class="form-select" onchange="this.form.submit()">
+                    <option value="">Select Semester</option>
+                    <?php foreach ($academicSemesters as $row): ?>
+                        <option value="<?=htmlspecialchars($row['academic_year']) . '-' . htmlspecialchars($row['semester'])?>"
+                            <?=isset($_GET['academic_semester']) && $_GET['academic_semester'] == htmlspecialchars($row['academic_year']) . '-' . htmlspecialchars($row['semester']) ? 'selected' : ''?>>
+                            <?=htmlspecialchars($row['semester'])?> / <?=htmlspecialchars($row['academic_year'])?>
+                        </option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </form>
+    </div>
 
-    <div class="table-container">
+    <!-- ซ่อนหรือแสดงเนื้อหาด้วย JavaScript -->
+    <div class="table-container" id="content" style="display: none;">
         <div class="table-title">Teaching schedule</div>
         <?php if (!empty($courses)): ?>
         <table class="table table-bordered mt-3">
@@ -727,8 +745,7 @@ usort($courses, function ($a, $b) {
                     <th>Name</th>
                     <th>Section</th>
                     <th>Day</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
+                    <th>Time</th>
                     <th>Classroom</th>
                 </tr>
             </thead>
@@ -739,8 +756,7 @@ usort($courses, function ($a, $b) {
                         <td><?php echo htmlspecialchars($course['subject_name']); ?></td>
                         <td><?php echo htmlspecialchars($course['section']); ?></td>
                         <td><?php echo htmlspecialchars($course['day_of_week']); ?></td>
-                        <td><?php echo htmlspecialchars($course['start_time']); ?></td>
-                        <td><?php echo htmlspecialchars($course['end_time']); ?></td>
+                        <td><?php echo htmlspecialchars($course['start_time']) . ' - ' . htmlspecialchars($course['end_time']); ?></td>
                         <td>
                             <?php echo htmlspecialchars($course['room_number']) . ' (' . htmlspecialchars($course['building']) . ', ' . htmlspecialchars($course['floor']) . ')'; ?>
                         </td>
@@ -748,39 +764,67 @@ usort($courses, function ($a, $b) {
                 <?php endforeach;?>
             </tbody>
         </table>
-        <!-- ถ้าไม่เจอวิชาของอาจารย์คนนี้ -->
-    <?php else: ?>
-        <p>No courses found for <?php echo htmlspecialchars($userName); ?>.</p>
-    <?php endif;?>
+        <?php else: ?>
+            <p>No courses found for <?php echo htmlspecialchars($userName); ?>.</p>
+        <?php endif;?>
     </div>
     <br>
     <br>
-        <h2>Classroom</h2>
-        <hr>
-        <br>
-        <div class="btn-container">
-    <?php
-foreach ($courses as $course):
-    $color = getColorForCourse($course['subject_id']);
-    ?>
-			    <!-- ส่ง URL ไปที่ section -->
-			        <a href="../web_app/section/import-students/manage-members.php?subject_id=<?php echo htmlspecialchars($course['subject_id']); ?>" class="btn btn-details" style="background-color: <?php echo $color; ?>;">
-			            <span class="subject-name"><?php echo htmlspecialchars($course['subject_name']); ?></span><br>
-			            <span class="course-details">
-			                (<?php echo htmlspecialchars($course['start_time']) . " - " . htmlspecialchars($course['end_time']); ?>) <?php echo htmlspecialchars($course['day_of_week']); ?><br>
-			                Section: <?php echo htmlspecialchars($course['section']); ?>
-			            </span>
-			        </a>
-			    <?php endforeach;?>
-</div>
+    <h2>Classroom</h2>
+    <hr>
+
+    <!-- ซ่อนหรือแสดงปุ่มด้วย JavaScript -->
+    <div class="btn-container" id="btnContent" style="display: none;">
+        <?php foreach ($courses as $course): ?>
+            <?php $color = getColorForCourse($course['subject_id']); ?>
+            <a href="../web_app/section/import-students/manage-members.php?subject_id=<?php echo htmlspecialchars($course['subject_id']); ?>" class="btn btn-details" style="background-color: <?php echo $color; ?>">
+                <span class="subject-name"><?php echo htmlspecialchars($course['subject_name']); ?></span><br>
+                <span class="course-details">
+                    (<?php echo htmlspecialchars($course['start_time']) . " - " . htmlspecialchars($course['end_time']); ?>) <?php echo htmlspecialchars($course['day_of_week']); ?><br>
+                    Section: <?php echo htmlspecialchars($course['section']); ?>
+                </span>
+            </a>
+        <?php endforeach;?>
+
+        <!-- Include footer -->
+        <?php include '../web_app/section/component/footer_details.php';?>
+        
+    </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/scripts.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var sidebarToggle = document.getElementById('sidebarToggle');
-    var body = document.body;
-    var wrapper = document.getElementById('wrapper');
-    var overlay = document.getElementById('overlay');
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectElement = document.getElementById('academic_semester');
+        const contentElement = document.getElementById('content');
+        const btnContainerElement = document.getElementById('btnContent');
+    
+        // แสดงหรือซ่อนเนื้อหาเมื่อเลือก academic_semester
+        if (selectElement.value !== "") {
+            contentElement.style.display = 'block';
+            btnContainerElement.style.display = 'block';
+        } else {
+            contentElement.style.display = 'none';
+            btnContainerElement.style.display = 'none';
+        }
+
+        selectElement.addEventListener('change', function() {
+            if (this.value === "") {
+                contentElement.style.display = 'none';
+                btnContainerElement.style.display = 'none';
+            } else {
+                contentElement.style.display = 'block';
+                btnContainerElement.style.display = 'block';
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var sidebarToggle = document.getElementById('sidebarToggle');
+        var body = document.body;
+        var wrapper = document.getElementById('wrapper');
+        var overlay = document.getElementById('overlay');
 
     // Toggle sidebar visibility when button is clicked
     sidebarToggle.addEventListener('click', function () {
@@ -794,8 +838,8 @@ document.addEventListener('DOMContentLoaded', function () {
         wrapper.classList.remove('toggled');
         overlay.style.display = 'none';
     })
+    
 });
-
 </script>
 </body>
 </html>

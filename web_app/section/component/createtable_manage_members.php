@@ -133,6 +133,6 @@ if (isset($_GET['subject_id'])) {
 //Create var Link
 $url_members = './manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id);
 $url_attendance = '../attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_home = '../index.php';
+$url_report = '../report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
 
 ?>
