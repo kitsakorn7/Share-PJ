@@ -630,10 +630,10 @@ h1 {
         </div>
         <br>
         <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="http://localhost/myproject/learn-reactjs-2024/course-app/addtable.php" style="font-size: 1rem; ">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../course-app/addtable.php" style="font-size: 1rem; ">
                 <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;" ></i> HOME
             </a>
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="http://localhost/myproject/learn-reactjs-2024/calendar/indext.php" style="font-size: 1rem;">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="./indext.php" style="font-size: 1rem;">
                 <i class="fas fa-calendar fa-lg" style="font-size: 1.5rem; margin-left: 10px;"></i> CALENDAR
             </a>
         </div>

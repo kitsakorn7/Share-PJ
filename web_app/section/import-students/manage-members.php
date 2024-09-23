@@ -90,6 +90,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+        
     </style>
 </head>
 <body>
@@ -212,7 +213,7 @@ if ($result->num_rows > 0) {
 
     //Form
     echo "<form id='importForm' action='import.php' method='post' enctype='multipart/form-data' style='display:none;'>";
-    echo "<input type='file' id='excelFile' name='excel_file' accept='.xls,.xlsx' required>";
+    echo "<input type='file' id='excelFile' name='excel_file[]' accept='.xls,.xlsx' multiple required>";
     echo "<input type='hidden' name='table_name' value='" . htmlspecialchars($table_name) . "'>";
     echo "</form>";
 

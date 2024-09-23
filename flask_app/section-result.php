@@ -19,6 +19,8 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Face Recognition Result</title>
     <style>
         .navbar {
@@ -45,10 +47,10 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
             left: 0;
             transition: width 0.3s ease;
         }
-            .navbar-custom .nav-link:hover::after,
-            .navbar-custom .nav-link.active::after {
-                width: 100%;
-            }
+        .navbar-custom .nav-link:hover::after,
+        .navbar-custom .nav-link.active::after {
+            width: 100%;
+        }
 
         /* Small devices (Phone 0-576px) */
         @media (max-width: 576px) {
@@ -57,7 +59,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
             }
             .container {
                 max-width: 475px;
-                margin: 50px auto;
+                margin: 0px auto;
                 padding: 20px;
                 background-color: #ffffff;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -85,33 +87,74 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                 background-color: #000; /* กำหนดสีของปุ่มลูกศร */
                 border-radius: 50px;
             }
+
+            .save-summary {
+                /* border: 1px solid black; */
+                padding-top: 20px;
+                /* margin: 0px 20px; */
+            }
+
             /* Right Sidebar */
             .right-group {
                 max-width: 475px;
-                background-color: #ffffff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-
-                display: flex;
-                flex-direction: column;
-                align-items: center;
                 margin: 50px auto;
+                background-color: #f8f9fa; /* เพิ่มพื้นหลังที่ดูเบา */
+                border-radius: 10px; /* มุมโค้งมน */
+                padding: 20px; /* เพิ่มระยะห่างใน */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* เงาที่ดูนุ่มนวล */
             }
+
             .total-profile {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                font-size: 14px; /* ขนาดฟอนต์ที่เหมาะสม */
+                color: #333; /* สีข้อความที่ดูง่าย */
+                padding: 10px 25px;
+                border-bottom: 1px solid #ddd; /* เส้นแบ่งระหว่างแต่ละแถว */
+            }
 
-                width: 90%;
-                height: 70px;
-                border: 1px solid black;
-                border-radius: 20px;
-                margin-top: 20px;
+            .total-profile:last-child {
+                border-bottom: none; /* เอาเส้นแบ่งออกในแถวสุดท้าย */
+            }
 
-            }    
+            h5 {
+                color: #007bff; /* สีที่ทำให้หัวข้อดูเด่น */
+            }
+
+            .fas {
+                font-size: 20px; /* ขนาดไอคอน */
+            }
+
             strong {
                 font-weight: 500;
             }    
+
+            /* ปรับขนาดและจัดตำแหน่งของ canvas */
+            #attendanceChart {
+                max-width: 100%; /* ให้ canvas ปรับขนาดตามความกว้างของ container */
+                height: auto !important; /* ปรับความสูงตามสัดส่วน */
+                margin: 0 auto; /* จัดกลางให้ canvas */
+                padding: 20px;
+                /* border: 2px solid #ddd;  เพิ่มกรอบรอบ canvas */
+                border-radius: 10px; /* ทำให้มุมกรอบมน */
+                /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  เพิ่มเงาให้ canvas */
+            }
+
+            /* ปรับแต่งตำแหน่ง legend */
+            .legend {
+                text-align: center; /* จัดตำแหน่ง legend ให้อยู่กลาง */
+                margin-top: 20px; /* เพิ่มระยะห่างระหว่าง legend กับ canvas */
+            }
+
+            /* ปรับแต่งข้อความใน canvas */
+            .canvas-text {
+                position: absolute; /* ใช้ตำแหน่ง absolute */
+                top: 47%; /* จัดกลางแนวตั้ง */
+                left: 50%; /* จัดกลางแนวนอน */
+                transform: translate(-50%, -50%); /* ทำให้ข้อความอยู่กลาง */
+                font-size: 20px; /* ขนาดฟอนต์ */
+                color: black; /* สีข้อความ */
+                font-weight: bold; /* น้ำหนักฟอนต์ */
+                z-index: 10; /* ทำให้ข้อความอยู่ด้านหน้า */
+            }
         }
 
         /*Medium devices (tablets, 576px and up)*/
@@ -139,40 +182,75 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
             }
             .container {
                 max-width: 700px;
-                /*margin: 50px auto;*/
+                margin: 50px auto;
                 padding: 20px;
                 background-color: #ffffff;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 border-radius: 10px;
                 text-align: center;
             }
+
             /* Right Sidebar */
             .right-group {
                 max-width: 700px;
-                background-color: #ffffff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-
-                display: flex;
-                flex-direction: column;
-                align-items: center;
                 margin: 50px auto;
+                background-color: #f8f9fa; /* เพิ่มพื้นหลังที่ดูเบา */
+                border-radius: 10px; /* มุมโค้งมน */
+                padding: 20px; /* เพิ่มระยะห่างใน */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
             }
+
             .total-profile {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                font-size: 14px; /* ขนาดฟอนต์ที่เหมาะสม */
+                color: #333; /* สีข้อความที่ดูง่าย */
+                padding: 10px 25px;
+                border-bottom: 1px solid #ddd; /* เส้นแบ่งระหว่างแต่ละแถว */
+            }
 
-                width: 90%;
-                height: 70px;
-                border: 1px solid black;
-                border-radius: 20px;
-                margin-top: 20px;
+            .total-profile:last-child {
+                border-bottom: none; /* เอาเส้นแบ่งออกในแถวสุดท้าย */
+            }
 
-            }    
+            h5 {
+                color: #007bff; /* สีที่ทำให้หัวข้อดูเด่น */
+            }
+
+            .fas {
+                font-size: 20px; /* ขนาดไอคอน */
+            }
+
             strong {
                 font-weight: 500;
-            }    
+            }  
+            
+            /* ปรับขนาดและจัดตำแหน่งของ canvas */
+            #attendanceChart {
+                max-width: 100%; /* ให้ canvas ปรับขนาดตามความกว้างของ container */
+                height: auto !important; /* ปรับความสูงตามสัดส่วน */
+                margin: 0 auto; /* จัดกลางให้ canvas */
+                padding: 20px;
+                /* border: 2px solid #ddd;  เพิ่มกรอบรอบ canvas */
+                border-radius: 10px; /* ทำให้มุมกรอบมน */
+                /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  เพิ่มเงาให้ canvas */
+            }
+
+            /* ปรับแต่งตำแหน่ง legend */
+            .legend {
+                text-align: center; /* จัดตำแหน่ง legend ให้อยู่กลาง */
+                margin-top: 20px; /* เพิ่มระยะห่างระหว่าง legend กับ canvas */
+            }
+
+            /* ปรับแต่งข้อความใน canvas */
+            .canvas-text {
+                position: absolute; /* ใช้ตำแหน่ง absolute */
+                top: 47%; /* จัดกลางแนวตั้ง */
+                left: 50%; /* จัดกลางแนวนอน */
+                transform: translate(-50%, -50%); /* ทำให้ข้อความอยู่กลาง */
+                font-size: 20px; /* ขนาดฟอนต์ */
+                color: black; /* สีข้อความ */
+                font-weight: bold; /* น้ำหนักฟอนต์ */
+                z-index: 10; /* ทำให้ข้อความอยู่ด้านหน้า */
+            }
         }
 
         /*Large devices (desktops, 992px and up)*/
@@ -235,17 +313,13 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                 width: 300px;
                 text-align: center;
             }
-            .save-summary {
-                /*border: 1px solid black;*/
-                padding-top: 20px;
-                margin: 0px 50px;
-            }
             button[type="submit"] {
                 background-color: #007bff;
-                width: 100%;
+                width: 625px;
                 color: #ffffff;
                 border: none;
                 padding: 10px 20px;
+                margin: 10px;
                 border-radius: 5px;
                 cursor: pointer;
                 font-size: 16px;
@@ -261,7 +335,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                 width: 250px;
                 height: 100vh;
                 background-color: #ffffff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important; 
                 border-radius: 10px;
 
                 display: flex;
@@ -283,7 +357,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
             }    
             strong {
                 font-weight: 500;
-            }    
+            }  
         }
     </style>
     <script>
@@ -308,25 +382,45 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
 
             <!-- Menu Bar class "navbar-custom" -->
             <nav class="navbar navbar-expand navbar-custom border-bottom">
-                <div class="navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="<?php echo htmlspecialchars($url_members); ?>">Manage Members</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="<?php echo htmlspecialchars($url_attendance); ?>">Attendance Check</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="<?php echo htmlspecialchars($url_report); ?>">Report daily</a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" data-href="<?php echo htmlspecialchars($url_members); ?>" onclick="showExitModal(event, this)">Manage Members</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" data-href="<?php echo htmlspecialchars($url_attendance); ?>" onclick="showExitModal(event, this)">Attendance Check</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" data-href="<?php echo htmlspecialchars($url_report); ?>" onclick="showExitModal(event, this)">Report daily</a>
+                </li>
+                </ul>
+            </div>
             </nav>
             <!-- End Menu Bar -->
 
+            <!-- Bootstrap Modal Menu Bar -->
+            <div class="modal fade" id="exitModal" tabindex="-1" aria-labelledby="exitModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exitModalLabel">Unsaved Changes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have unsaved changes. Are you sure you want to leave this page?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="confirmSaveButton">Save, Leave</button>
+                    <button type="button" class="btn btn-primary" id="confirmExitButton">Unsaved, Leave</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
             <div class="wrapper-page-content"> <!-- wrapper-page-content -->
 
-                <div class="container mt-5"> <!-- Page content-->
+                <!-- Page content-->
+                <div class="container"> 
                     <h1 class="mt-4">Faces detection Result</h1>
                     <?php
                     $table_name = $_SESSION['table_name'];
@@ -415,7 +509,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
 
                         echo "<br>";
                         // แสดงรายชื่อบุคคลที่ตรวจจับได้ทั้งหมด
-                        echo "<h2>Summary daily</h2>";
+                        echo "<h2 class='text-primary'>Summary daily</h2>";
                         echo "<br>";
 
                         // On Time
@@ -516,26 +610,16 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                         
                         echo "</div>";
 
-                        echo "<br>";
-                        echo "<br>";
-
-                        // Summary Students
-                        echo "<div class='name-container'>";
-                        echo "<div class='totalBar-container'>";
-
-                        echo "</div>";
-                        echo "</div>";
-                        // End Summary Students
-
                         echo "</div>";
 
                     } else {
                         echo "<p>Server is  not open!.<br>Please contact admin.</p>";
                     }
                     ?>
+                    <br>
                     <div class="save-summary mb-2">
-                        <form action="./create-daily-report.php" method="post" onsubmit="return confirm('Confirm to Save results?');">
-                            <input type="hidden" name="table_name" value="<?php echo htmlspecialchars($table_name); ?>">
+                    <form action="./create-daily-report.php" method="post">
+                    <input type="hidden" name="table_name" value="<?php echo htmlspecialchars($table_name); ?>">
                             <input type="hidden" name="table_weeks_name" value="<?php echo htmlspecialchars($table_weeks_name); ?>">
                             <input type="hidden" name="week_date" value="<?php echo htmlspecialchars($week_date); ?>">
                             <input type="hidden" name="week_number" value="<?php echo htmlspecialchars($week_number); ?>">
@@ -553,28 +637,233 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                     </div>
                 </div> <!-- End Page content-->
 
-                <div class="right-group mt-5"> <!-- Right Sidebar-->
-
-                    <div class="total-profile">
-                        Total Faces On the Time : <?php echo htmlspecialchars($total_facesOnTime); ?>            
-                    </div>
-
-                    <div class="total-profile">
-                        Total Faces Late Time : <?php echo htmlspecialchars($total_facesLateTime); ?>
-                    </div>
-
-                    <div class="total-profile">
-                        Total Faces AbsentTime : <?php echo htmlspecialchars($total_facesAbsentTime); ?>
-                    </div>
-                    <div class="total-profile">
-                        Total Faces Attendance : <?php echo htmlspecialchars($total_faces); ?>
+                <!-- Bootstrap Modal -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel">Confirm to Save Results</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to save the results?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="confirmSaveButton">Save</button>
+                        </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Right Sidebar -->
+                <div class="right-group mt-5 p-3 rounded shadow-lg" style="background-color: #f8f9fa;"> 
+
+                    <h5 class="mt-4 mb-3 text-primary text-center">More Detail</h5>
+
+                    <div class="total-profile d-flex align-items-center my-2">
+                        <i class="fas fa-check-circle text-success"></i>
+                        <span>Faces On Time: </span>
+                        <strong class="ms-auto"><?php echo htmlspecialchars($total_facesOnTime); ?></strong>          
+                    </div>
+
+                    <div class="total-profile d-flex align-items-center my-2">
+                        <i class="fas fa-clock text-warning"></i>
+                        <span>Faces Late Time: </span>
+                        <strong class="ms-auto"><?php echo htmlspecialchars($total_facesLateTime); ?></strong>
+                    </div>
+
+                    <div class="total-profile d-flex align-items-center my-2">
+                        <i class="fas fa-exclamation-circle text-danger"></i>
+                        <span>Faces Absent Time: </span>
+                        <strong class="ms-auto"><?php echo htmlspecialchars($total_facesAbsentTime); ?></strong>
+                    </div>
+
+                    <div class="total-profile d-flex align-items-center my-2">
+                        <i class="fas fa-user-check text-info"></i>
+                        <span>Total Attendance: </span>
+                        <strong class="ms-auto"><?php echo htmlspecialchars($total_faces); ?></strong>
+                    </div>
+
+                    <!-- แสดงกราฟใน Sidebar -->
+                    <!-- <canvas class="mt-4" id="attendanceChart" width="400" height="400"></canvas> -->
+
+                    <div class="canvas-container" style="position: relative;">
+                        <canvas class="mt-4" id="attendanceChart" width="400" height="400"></canvas>
+                    </div>
+
+                 </div>
+                <!-- End Right Sidebar -->
+
             </div> <!-- End wrapper-Page-content-->
+
+            <!-- Include footer -->
+            <?php include('../web_app/section/component/footer_details.php'); ?>
+
         </div> <!-- End Page content wrapper-->  
     </div>
+
+    <!-- เพิ่ม Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- เพิ่ม Chart.js Plugin Doughnutlabel -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.0"></script>
+
+    <!-- เพิ่ม Chart.js Plugin DataLabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Bundle with Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            const confirmSaveButton = document.getElementById('confirmSaveButton');
+
+            form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            confirmModal.show(); // Show the modal
+            });
+
+            confirmSaveButton.addEventListener('click', function () {
+            form.submit(); // Submit the form when "Save" is clicked
+            });
+        });
+
+        function showExitModal(event, element) {
+            event.preventDefault(); // Prevent the default link behavior
+            const url = element.getAttribute('data-href'); // Get the URL from data attribute
+            const confirmExitButton = document.getElementById('confirmExitButton');
+            
+            const exitModal = new bootstrap.Modal(document.getElementById('exitModal'));
+            exitModal.show(); // Show the modal
+
+            confirmExitButton.addEventListener('click', function () {
+            window.location.href = url; // Redirect to the URL when "Yes, Leave" is clicked
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // ดึงค่าจาก PHP มาใช้ใน JavaScript
+            var totalOnTime = <?php echo json_encode($total_facesOnTime); ?>;
+            var totalLate = <?php echo json_encode($total_facesLateTime); ?>;
+            var totalAbsent = <?php echo json_encode($total_facesAbsentTime); ?>;
+
+            var ctx = document.getElementById('attendanceChart').getContext('2d');
+
+            // ฟังก์ชันกำหนดการตั้งค่าของ label ฟอนต์
+            function getLabelFont() {
+                if (window.matchMedia("(min-width: 992px)").matches) {
+                    return {
+                        size: 20,
+                        family: 'Arial, sans-serif',
+                        weight: 'bold'
+                    };
+                } else {
+                    return {
+                        size: 16,
+                        family: 'sans-serif',
+                        weight: 'normal'
+                    };
+                }
+            }
+
+            // ฟังก์ชันกำหนดการตั้งค่าของ tooltip ฟอนต์
+            function getTooltipFont() {
+                if (window.matchMedia("(min-width: 992px)").matches) {
+                    return {
+                        size: 18,
+                        family: 'Arial, sans-serif',
+                        weight: 'bold'
+                    };
+                } else {
+                    return {
+                        size: 14,
+                        family: 'sans-serif',
+                        weight: 'normal'
+                    };
+                }
+            }
+
+            var attendanceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['On Time', 'Late', 'Absent'],
+                    datasets: [{
+                        label: 'Attendance Summary',
+                        data: [120, 45, 10],
+                        //data: [totalOnTime, totalLate, totalAbsent],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(255, 99, 132, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 255, 255, 1)',
+                            'rgba(255, 255, 255, 1)',
+                            'rgba(255, 255, 255, 1)'
+                        ],
+                        borderWidth: 5
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuad',
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: getLabelFont() // ใช้ฟอนต์ที่กำหนดตามขนาดหน้าจอ
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                labelTextColor: function() {
+                                    return 'white'; // กำหนดสีของ label เมื่อ hover
+                                }
+                            },
+                            titleFont: getTooltipFont(), // ใช้ฟอนต์ที่กำหนดตามขนาดหน้าจอสำหรับ tooltip
+                            bodyFont: getTooltipFont(), // ใช้ฟอนต์ที่กำหนดตามขนาดหน้าจอสำหรับ tooltip
+                        },
+                        datalabels: {
+                            color: 'white',
+                            font: {
+                                size: 13,
+                                family: 'sans-serif',
+                                style: 'normal',
+                                weight: 'bold'
+                            },
+                            formatter: (value, ctx) => {
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => {
+                                    sum += data;
+                                });
+                                let percentage = (value * 100 / sum).toFixed(2) + "%";
+                                return percentage;
+                            },
+                        }
+                    },
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            // เพิ่ม event listener เพื่ออัปเดตฟอนต์ label และ tooltip เมื่อขนาดหน้าจอเปลี่ยน
+            window.addEventListener('resize', function() {
+                // อัปเดตฟอนต์ของ label
+                attendanceChart.options.plugins.legend.labels.font = getLabelFont();
+                attendanceChart.options.plugins.tooltip.titleFont = getTooltipFont();
+                attendanceChart.options.plugins.tooltip.bodyFont = getTooltipFont();
+                attendanceChart.update(); // อัปเดตกราฟ
+            });
+        });
+    </script>
 </body>
 </html>

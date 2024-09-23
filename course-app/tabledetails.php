@@ -176,7 +176,7 @@ usort($courses, function ($a, $b) {
         }
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            padding: 20px;
         }
 
        /* Container หลัก */
@@ -451,6 +451,7 @@ usort($courses, function ($a, $b) {
         #wrapper.toggled #sidebar-wrapper {
             left: 0; /* Show sidebar */
             z-index: 999; /* Higher than overlay */
+            transition: left 0.3s ease;
         }
 
         #wrapper.toggled .overlay {
@@ -657,7 +658,7 @@ usort($courses, function ($a, $b) {
         </div>
         <hr>
         <div class="responsive-div" style="margin-left: 23px;">ENROLLED</div>
-            <div class="btn-container-2">
+            <div class="btn-container-2" style="display: none;">
                 <?php
                 // Courses list in Menu
                 foreach ($courses as $course):
@@ -799,23 +800,29 @@ usort($courses, function ($a, $b) {
         const selectElement = document.getElementById('academic_semester');
         const contentElement = document.getElementById('content');
         const btnContainerElement = document.getElementById('btnContent');
-    
+        const btnContainer2Element = document.querySelector('.btn-container-2');  // เพิ่มอ้างอิงถึง btn-container-2
+        
         // แสดงหรือซ่อนเนื้อหาเมื่อเลือก academic_semester
         if (selectElement.value !== "") {
             contentElement.style.display = 'block';
             btnContainerElement.style.display = 'block';
+            btnContainer2Element.style.display = 'block';  // แสดง btn-container-2
+
         } else {
             contentElement.style.display = 'none';
             btnContainerElement.style.display = 'none';
+            btnContainer2Element.style.display = 'none';  // ซ่อน btn-container-2
         }
 
         selectElement.addEventListener('change', function() {
             if (this.value === "") {
                 contentElement.style.display = 'none';
                 btnContainerElement.style.display = 'none';
+                btnContainer2Element.style.display = 'none';  // ซ่อน btn-container-2
             } else {
                 contentElement.style.display = 'block';
                 btnContainerElement.style.display = 'block';
+                btnContainer2Element.style.display = 'block';  // แสดง btn-container-2
             }
         });
     });

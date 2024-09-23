@@ -283,35 +283,61 @@ $url_home = '../index.php';
 
             height: 150px;      
         }
-        /* Clear Btn */
-        #clear-btn {
-            width: 115px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: start;
-            margin-left: auto;
-            margin-right: 0;
-            display: block;
+        .clear-btn-container {
+            display: flex;
+            justify-content: flex-end; /* จัดตำแหน่งปุ่มให้ชิดขวา */
+            margin: 5px 0px 0px 0px;
         }
         .clear-btn {
-            width:  90px;
-            padding: 2px 4px;
-            margin: 3px;
-            text-align: center;
+            font-size: 10px !important;
+            padding: 6px 12px !important;
+            display: inline-block !important;
+            width: 60px !important;
+            text-align: center !important;
+            line-height: 1.5 !important;
+            margin-bottom: 10px !important;
+            background-color: #dc3545 !important; /* สีแดง */
+            color: #fff !important; /* สีข้อความขาว */
+            border: none !important; /* ไม่มีกรอบ */
+            border-radius: 4px !important; /* ขอบมน */
+            cursor: pointer !important; /* เปลี่ยน cursor เป็น pointer */
         }
         .full-width {
             width: 100%;
         }
         /* Topic */
-        th {
-            font-size: 8.5px;
-            text-align: center;
-            vertical-align: top;
-        }
-        /* details */
+        table th {
+            font-size: 8px;
+            padding: 8px; /* กำหนด padding ภายในเซลล์ */
+            border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
+            text-align: center; /* จัดข้อความให้อยู่ซ้าย */
+            vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของเซลล์ */
+            text-decoration: none; /* ลบการขีดเส้นใต้ */
+        }    
+        table td {
+            font-size: 8px;
+            padding: 6px; /* กำหนด padding ภายในเซลล์ */
+            border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
+            text-align: center; /* จัดข้อความให้อยู่ซ้าย */
+            vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของเซลล์ */
+            text-decoration: none; /* ลบการขีดเส้นใต้ */
+        } 
         td {
-            font-size: 10px;
-            text-align: center;
+            word-wrap: break-word; /* ตัดคำเมื่อข้อความยาวเกินขนาดที่กำหนด */
+            white-space: normal; /* อนุญาตให้ตัดบรรทัดในข้อความ */
+            overflow: hidden; /* ซ่อนข้อความที่ยาวเกิน */
+        }
+        th.col-1 {
+            width: 20px; /* Select / No */
+        }
+        th.col-2 {
+            width: 100px; /* Std_id */
+        }
+        th.col-3 {
+            width: 180px; /* Name */
+        }
+        th.col-4 {
+            width: 160px; /* Facty */
         }
         /* Action Btn */
         .custom-btn {
@@ -530,9 +556,11 @@ $url_home = '../index.php';
                     } else {
 
                         echo "<form id='clear-btn' action='clear_report.php' method='post' onsubmit='return confirm(\"Are you sure you want to clear report history?\");'>";
+                        echo "<div class='clear-btn-container'>";
                         echo "<button type='submit' class='btn btn-danger clear-btn'>Clear</button>";
                         echo "<input type='hidden' name='table_name' value='$table_name'>";
                         echo "<input type='hidden' name='table_weeks_name' value='$table_weeks_name'>";
+                        echo "</div>";
                         echo "</form>";
                                 
                         // Pagination
@@ -551,8 +579,8 @@ $url_home = '../index.php';
                         if ($result->num_rows > 0) {
                             echo "<div class='full-width'>";
                             echo "<table class='table table-striped'>";
-                            echo "<caption>Attendance History Table</caption>";
-                            echo "<thead style='text-align: center';><tr><th>Attendance Date/Time</th><th>Present group</th><th>Late group</th><th>Absent group</th><th>Total</th><th></th></tr></thead>";
+                            echo "<h6 class='mt-2 mb-3'>Attendance History Table</h6>";
+                            echo "<thead style='text-align: center';><tr><th class='col-1'>Attendance Date/Time</th><th class='col-2'>Present group</th><th class='col-3'>Late group</th><th class='col-4'>Absent group</th><th class='col-5'>Total</th><th></th></tr></thead>";
                             echo "<tbody>";
 
                             while ($row = $result->fetch_assoc()) {

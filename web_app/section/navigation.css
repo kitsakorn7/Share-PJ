@@ -216,16 +216,16 @@ tr:hover {
         padding: 10px;
     }
     #sidebar-wrapper {
-    width: 300px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #ddd;
-    position: fixed;
-    height: 100%;
-    top: 0;
-    left: -250px; /* Hide by default */
-    transition: all 0.3s ease;
-    overflow-y: auto; /* เพิ่มคุณสมบัติ overflow */
-}
+        width: 300px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: -250px; /* Hide by default */
+        transition: all 0.3s ease;
+        overflow-y: auto; /* เพิ่มคุณสมบัติ overflow */
+    }
 
 .overlay {
     position: fixed;

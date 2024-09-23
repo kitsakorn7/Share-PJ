@@ -48,7 +48,7 @@ if (isset($_GET['logout'])) {
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            padding: 20px;
         }
 
         .table-container {
@@ -58,10 +58,6 @@ if (isset($_GET['logout'])) {
             padding: 60px;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
         .table th, .table td {
             vertical-align: middle;
             text-align: center;
@@ -155,11 +151,13 @@ if (isset($_GET['logout'])) {
             border-radius: 6%;
         }
 
-        @media screen and (max-width: 640px) {
+        @media screen and (max-width: 576px) {
+
             .sidebar-heading {
+                display: flex;
+                gap: 5px;
+                align-items: center;
                 padding: 5px;
-                flex-direction: column;
-                align-items: flex-start;
             }
 
             #wrapper {
@@ -201,12 +199,7 @@ if (isset($_GET['logout'])) {
             }
         }
 
-        @media screen and (max-width: 640px) {
-            .sidebar-heading {
-                padding: 5px;
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        @media screen and (max-width: 576px) {
             #sidebar-wrapper {
             width: 300px;
             background-color: #f8f9fa;
@@ -331,7 +324,7 @@ if (isset($_GET['logout'])) {
                     <h5>Click "Join class" to get start!</h5>
                 </div>
                 <!-- Table content with only button -->
-                <div class="container mt-5">
+                <div class="container">
                     <div class="d-flex justify-content-center">
                         <form action="tabledetails.php" method="POST">
                             <input type="hidden" name="action" value="create_table">
@@ -341,7 +334,6 @@ if (isset($_GET['logout'])) {
                 </div>
             </div>
         </div>
-<br>
 <br>
 <br>
         <script src="js/scripts.js"></script>

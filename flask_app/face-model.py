@@ -31,8 +31,8 @@ def บันทึกรูปภาพจากBLOB(image_data, file_name):
         # เปิดรูปภาพจากข้อมูล BLOB
         image = Image.open(io.BytesIO(image_data))
         
-        # กำหนดพาธที่ต้องการบันทึกไฟล์
-        save_path = 'C:/xampp/htdocs/myproject/learn-reactjs-2024/flask_app/images_fromBLOB' + file_name
+        # กำหนดพาธที่ต้องการบันทึกไฟล์ C:/xampp/htdocs/myproject/learn-reactjs-2024/flask_app/images_fromBLOB/
+        save_path = 'C:/xampp/htdocs/myproject/learn-reactjs-2024/flask_app/images_fromBLOB/BLOB_images_' + file_name # uploaded_ + file_name ชื่อไฟล์
         
         # บันทึกรูปภาพ
         image.save(save_path)

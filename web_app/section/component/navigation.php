@@ -18,11 +18,15 @@
             <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../../course-app/addtable.php" style="font-size: 1rem; ">
                 <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;" ></i> HOME
             </a>
+
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../../course-app/tabledetails.php" style="font-size: 1rem; ">
+                <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;" ></i> TIMETABLE
+            </a>
+
             <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../../calendar/indext.php" style="font-size: 1rem;">
                 <i class="fas fa-calendar fa-lg" style="font-size: 1.5rem; margin-left: 10px;"></i> CALENDAR
             </a>
         </div>
-        <br>
         <hr>
         <div class="responsive-div" style="margin-left: 23px;">ENROLLED</div>
             <div class="btn-container-2">
