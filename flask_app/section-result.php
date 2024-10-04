@@ -3,12 +3,17 @@ session_start(); // เริ่มต้น session
 
 $table_name = $_SESSION['table_name'];
 $table_weeks_name = $_SESSION['table_weeks_name'];
+$academic_semesterNav = $_SESSION['academic_semester'];
+$semester = $_SESSION['semester'];
+$section = $_SESSION['section'];
+$academic_year = $_SESSION['academic_year'];
+
 $subject_id = $_SESSION['subject_id'];
 
 //Create var Link
-$url_members = '../web_app/section/import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id);
-$url_attendance = '../web_app/section/attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_report = '../web_app/section/report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
+$url_members = '../web_app/section/import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section) ;
+$url_attendance = '../web_app/section/attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_report = '../web_app/section/report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 
 ?>
 
@@ -254,7 +259,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
         }
 
         /*Large devices (desktops, 992px and up)*/
-        @media (min-width: 992px) { 
+        @media (min-width: 1320px) { 
             .carousel-item img {
                 width: 100%;
                 height: 425px; /* กำหนดความสูงของภาพ */
@@ -333,7 +338,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
             /* Right Sidebar */
             .right-group {
                 width: 250px;
-                height: 100vh;
+                height: 600px;
                 background-color: #ffffff;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important; 
                 border-radius: 10px;
@@ -351,7 +356,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                 width: 90%;
                 height: 70px;
                 border: 1px solid black;
-                border-radius: 20px;
+                border-radius: 50px;
                 margin-top: 20px;
 
             }    
@@ -410,8 +415,8 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                     You have unsaved changes. Are you sure you want to leave this page?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="confirmSaveButton">Save, Leave</button>
-                    <button type="button" class="btn btn-primary" id="confirmExitButton">Unsaved, Leave</button>
+                    <button type="button" class="btn btn-secondary" id="confirmExitButton">Unsaved, Leave</button>
+                    <button type="button" class="btn btn-primary confirmSaveButton">Save, Leave</button>
                 </div>
                 </div>
             </div>
@@ -458,7 +463,7 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                         if (!is_array($results) || empty($results)) {
                             // หากรูปบุคคลที่นำเข้ามา ไม่ตรง จะแสดงข้อความ ดังนี้
                             echo "<p>Can't detect students because Image of the face in the uploaded photo. Does not match the name listed in your class.<br>Please check your students to the section.</p>";
-                            $redirect_url_managemember = "http://192.168.1.39/myproject/Web_app/section/import-students/manage-members.php?table_name=$table_name&subject_id=$subject_id";
+                            $redirect_url_managemember = "http://192.168.1.39/myproject/Web_app/section/import-students/manage-members.php?table_name=$table_name&subject_id=$subject_id&academic_semester=$academic_semesterNav";
                             echo "<a href='$redirect_url_managemember'>Click! to manage members</a>";
                             exit();
                         }
@@ -621,6 +626,11 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                     <form action="./create-daily-report.php" method="post">
                     <input type="hidden" name="table_name" value="<?php echo htmlspecialchars($table_name); ?>">
                             <input type="hidden" name="table_weeks_name" value="<?php echo htmlspecialchars($table_weeks_name); ?>">
+                            <input type="hidden" name="academic_semester" value="<?php echo htmlspecialchars($academic_semesterNav); ?>">
+                            <input type="hidden" name="section" value="<?php echo htmlspecialchars($section); ?>">
+                            <input type="hidden" name="academic_year" value="<?php echo htmlspecialchars($academic_year); ?>">
+                            <input type="hidden" name="semester" value="<?php echo htmlspecialchars($semester); ?>">
+
                             <input type="hidden" name="week_date" value="<?php echo htmlspecialchars($week_date); ?>">
                             <input type="hidden" name="week_number" value="<?php echo htmlspecialchars($week_number); ?>">
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">                        
@@ -650,8 +660,8 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="confirmSaveButton">Save</button>
-                        </div>
+                            <button type="button" class="btn btn-primary confirmSaveButton">Save, Leave</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -722,15 +732,18 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.querySelector('form');
             const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            const confirmSaveButton = document.getElementById('confirmSaveButton');
+            const confirmSaveButtons = document.querySelectorAll('.confirmSaveButton');
 
             form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
-            confirmModal.show(); // Show the modal
+                e.preventDefault(); // Prevent the default form submission
+                confirmModal.show(); // Show the modal
             });
 
-            confirmSaveButton.addEventListener('click', function () {
-            form.submit(); // Submit the form when "Save" is clicked
+            // เพิ่ม event listener ให้กับทุกปุ่มที่มี class "confirmSaveButton"
+            confirmSaveButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                    form.submit();
+                });
             });
         });
 
@@ -795,8 +808,8 @@ $url_report = '../web_app/section/report-history/summary_report.php?table_name='
                     labels: ['On Time', 'Late', 'Absent'],
                     datasets: [{
                         label: 'Attendance Summary',
-                        data: [120, 45, 10],
-                        //data: [totalOnTime, totalLate, totalAbsent],
+                        //data: [120, 45, 10],
+                        data: [totalOnTime, totalLate, totalAbsent],
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.6)',
                             'rgba(255, 206, 86, 0.6)',

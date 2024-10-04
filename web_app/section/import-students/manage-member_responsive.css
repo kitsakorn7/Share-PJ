@@ -274,7 +274,7 @@
         text-decoration: none; /* ลบการขีดเส้นใต้ */
     }    
     table td {
-        font-size: 10px;
+        font-size: 11px;
         padding: 6px; /* กำหนด padding ภายในเซลล์ */
         border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
         text-align: center; /* จัดข้อความให้อยู่ซ้าย */
@@ -299,7 +299,7 @@
         width: 180px; /* Facty */
     }
     .next-btn {
-        font-size: 13px; /* ขนาดฟอนต์ */
+        font-size: 14px; /* ขนาดฟอนต์ */
         padding: 8px 16px; /* ขนาด padding ของปุ่ม */
         display: inline-block;
         width: 100px; /* กำหนดความกว้างของปุ่ม */

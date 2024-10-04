@@ -12,11 +12,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
+    $_SESSION['section'] = isset($_POST['section']) ? $_POST['section'] : '';
     $_SESSION['table_name'] = isset($_POST['table_name']) ? $_POST['table_name'] : '';
     $_SESSION['table_weeks_name'] = isset($_POST['table_weeks_name']) ? $_POST['table_weeks_name'] : '';
+    $_SESSION['academic_semester'] = isset($_POST['academic_semester']) ? $_POST['academic_semester'] : '';
+    
     $table_name = $_SESSION['table_name'];
-    $table_weeks_name = $_SESSION['table_weeks_name'];
-
+    $academic_semesterNav = $_SESSION['academic_semester'];
+    $section = $_SESSION['section'];
+    
     $week_date = isset($_POST['week_date']) ? $_POST['week_date'] : '';
     $week_number = isset($_POST['week_number']) ? $_POST['week_number'] : '';
     $id = isset($_POST['id']) ? $_POST['id'] : '';
@@ -24,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $on_time_time = isset($_POST['on_time_time']) ? $_POST['on_time_time'] : '';
     $late_time = isset($_POST['late_time']) ? $_POST['late_time'] : '';
     $absent_time = isset($_POST['absent_time']) ? $_POST['absent_time'] : '';
+
     
     $images = $_FILES["images"];
     $results = array();
@@ -119,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result_data = json_encode($results);
     $uploaded_images_data = json_encode($uploaded_images);
 
-    $redirect_url = 'section-result.php?data=' . urlencode($result_data) . '&uploaded_images=' . urlencode($uploaded_images_data) . '&week_date=' . urlencode($week_date) . '&week_number=' . urlencode($week_number) . '&id=' . urlencode($id) . '&subject=' . urlencode($subject) . '&on_time_time=' . urlencode($on_time_time) . '&late_time=' . urlencode($late_time) . '&absent_time=' . urlencode($absent_time);
+    $redirect_url = 'section-result.php?data=' . urlencode($result_data) . '&uploaded_images=' . urlencode($uploaded_images_data) . '&week_date=' . urlencode($week_date) . '&week_number=' . urlencode($week_number) . '&id=' . urlencode($id) . '&subject=' . urlencode($subject) . '&on_time_time=' . urlencode($on_time_time) . '&late_time=' . urlencode($late_time) . '&absent_time=' . urlencode($absent_time) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 
     header('Location: ' . $redirect_url);
     exit();

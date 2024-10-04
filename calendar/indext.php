@@ -477,7 +477,7 @@ h1 {
     font-size: 1.2em; /* ขนาดตัวอักษร */
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 576px) {
     .sidebar-heading {
         padding: 5px;
         flex-direction: column;

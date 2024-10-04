@@ -29,3 +29,9 @@
         display: flex;
         flex-direction: column;
 }
+
+@media (max-width: 576px) { 
+    .container-members-fluid {
+        font-size: 14px;
+    }
+}

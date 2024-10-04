@@ -14,18 +14,21 @@ $academic_year = $_SESSION['academic_year'];
 $day_of_week = $_SESSION['day_of_week'];
 $start_time = $_SESSION['start_time'];
 $end_time = $_SESSION['end_time'];
-$section = $_SESSION['section'];
+// $section = $_SESSION['section'];
 
+$section = isset($_GET['section']) ? strtolower($_GET['section']) : '';
 $table_name = isset($_GET['table_name']) ? strtolower($_GET['table_name']) : '';
 $table_weeks_name = isset($_GET['table_weeks_name']) ? strtolower($_GET['table_weeks_name']) : '';
+$academic_semesterNav = isset($_GET['academic_semester']) ? strtolower($_GET['academic_semester']) : '';
 
-$table_report = preg_replace("/[^a-zA-Z_]/", "", "report_daily_" . $subject_name);
+// สร้างชื่อของตารางสำหรับค้นหาในฐานข้อมูล
+$table_report = "report_daily_" . preg_replace('/\s+/', '_', $subject_name) . "_" . $section . "_" . $academic_year . "_" . $semester;
 
-$url_members = '../import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id);
-$url_attendance = '../attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_home = '../index.php';
+$table_report = preg_replace('/[^a-zA-Z0-9_]/', '_', $table_report);
 
+$url_members = '../import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_attendance = '../attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 
 ?>
 
@@ -349,6 +352,10 @@ $url_home = '../index.php';
         .footer {
             font-size: 12px;
         }
+
+        .modal-body {
+            font-size: 14px;
+        }
     }
 
     /*Medium devices (tablets, 576px and up)*/
@@ -411,27 +418,67 @@ $url_home = '../index.php';
 
             height: 150px;      
         }
-        /* Clear Btn */
-        #clear-btn {
-            width: 100px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: start;
-            margin-left: auto;
-            margin-right: 0;
-            display: block;
+        .clear-btn-container {
+            display: flex;
+            justify-content: flex-end; /* จัดตำแหน่งปุ่มให้ชิดขวา */
+            margin: 5px 0px 0px 0px;
         }
-        /* Topic */
-        th {
-            font-size: 15px;
+        table th {
+            font-size: 11px;
+            padding: 8px; /* กำหนด padding ภายในเซลล์ */
+            border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
+            text-align: center; /* จัดข้อความให้อยู่ซ้าย */
+            vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของเซลล์ */
+            text-decoration: none; /* ลบการขีดเส้นใต้ */
+        }
+        table td {
+            font-size: 11px;
+            padding: 6px; /* กำหนด padding ภายในเซลล์ */
+            border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
+            text-align: center; /* จัดข้อความให้อยู่ซ้าย */
+            vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของเซลล์ */
+            text-decoration: none; /* ลบการขีดเส้นใต้ */
+        }
+        /* Action Btn */
+        .custom-btn {
+            font-size: 10px;
+            width:  50px;
+            padding: 4px 8px;
+            margin: 3px;
+        }
+
+        .modal-body {
+            font-size: 14px;
+        }
+
+        .clear-btn {
+            font-size: 12px !important;
+            padding: 7px 14px !important;
+            display: inline-block;
+            width: 70px;
             text-align: center;
-            vertical-align: top;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            background-color: #dc3545 !important; /* ใช้รหัสสีแดงและเพิ่ม !important */
+            color: #fff !important; /* สีข้อความ */ /* เพิ่มความสำคัญให้กับ CSS: ใช้ !important เพื่อให้แน่ใจว่าสไตล์ของคุณมีความสำคัญมากกว่าของ Bootstrap */
+            border: none !important; /* ลบกรอบออก */
+            border-radius: 4px !important; /* ขอบมน */
+            cursor: pointer; /* แสดง cursor เป็น pointer */
         }
-        /* details */
-        td {
-            font-size: 15px;
-            text-align: center;
+        
+        .clear-btn:hover {
+            background-color: #c82333 !important; /* สีแดงเข้มเมื่อ hover */
         }
+
+        /* Action Btn */
+        .custom-btn {
+            font-size: 10px;
+            width:  50px;
+            padding: 4px 8px;
+            margin: 3px;
+        }
+
+
     }
 
     /*Large devices (desktops, 992px and up)*/
@@ -493,14 +540,55 @@ $url_home = '../index.php';
 
             height: 150px;      
         }
-        #clear-btn {
-            max-width: 180px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: start;
-            margin-left: auto;
-            margin-right: 0;
-            display: block;
+        table th {
+            font-size: 14px;
+            padding: 8px; /* กำหนด padding ภายในเซลล์ */
+            border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
+            text-align: center; /* จัดข้อความให้อยู่ซ้าย */
+            vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของเซลล์ */
+            text-decoration: none; /* ลบการขีดเส้นใต้ */
+        }
+        table td {
+            font-size: 14px;
+            padding: 6px; /* กำหนด padding ภายในเซลล์ */
+            border: 1px solid #ddd; /* เส้นขอบของเซลล์ */
+            text-align: center; /* จัดข้อความให้อยู่ซ้าย */
+            vertical-align: top; /* จัดข้อความให้อยู่ด้านบนของเซลล์ */
+            text-decoration: none; /* ลบการขีดเส้นใต้ */
+        }
+
+        .clear-btn-container {
+            display: flex;
+            justify-content: flex-end; /* จัดตำแหน่งปุ่มให้ชิดขวา */
+            margin: 5px 0px 0px 0px;
+        }
+        .clear-btn {
+            font-size: 14px !important;
+            padding: 8px 16px !important;
+            display: inline-block;
+            width: 80px;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            background-color: #dc3545 !important; /* ใช้รหัสสีแดงและเพิ่ม !important */
+            color: #fff !important; /* สีข้อความ */ /* เพิ่มความสำคัญให้กับ CSS: ใช้ !important เพื่อให้แน่ใจว่าสไตล์ของคุณมีความสำคัญมากกว่าของ Bootstrap */
+            border: none !important; /* ลบกรอบออก */
+            border-radius: 4px !important; /* ขอบมน */
+            cursor: pointer; /* แสดง cursor เป็น pointer */
+        }
+        
+        .clear-btn:hover {
+            background-color: #c82333 !important; /* สีแดงเข้มเมื่อ hover */
+        }
+        /* Action Btn */
+        .custom-btn {
+            font-size: 14px; /* ขนาดฟอนต์ */
+            padding: 8px 16px; /* ขนาด padding ของปุ่ม */
+            display: inline-block;
+            width: 80px; /* กำหนดความกว้างของปุ่ม */
+            text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+            line-height: 1.5; /* ความสูงของบรรทัดเพื่อให้ปุ่มมีความสูงเท่ากัน */
+            margin: 3px;
         }
     }
 </style>
@@ -530,6 +618,25 @@ $url_home = '../index.php';
             </nav>
             <!-- End Menu Bar -->
 
+            <!-- Modal สำหรับการยืนยัน -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to clear report history?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmClearButton">Confirm</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
             <div class="container mt-5">
                 <?php include('../component/header_details.php'); ?>
             </div>
@@ -555,14 +662,19 @@ $url_home = '../index.php';
                         echo "<div id='Nofounds_report'><p class='text-center'>No founds Your Attendance Report.<br>Please! take a Attendance Checking and Save your results.</p></div>";
                     } else {
 
-                        echo "<form id='clear-btn' action='clear_report.php' method='post' onsubmit='return confirm(\"Are you sure you want to clear report history?\");'>";
+                        echo "<form id='clear-btn' action='clear_report.php' method='post'>";
                         echo "<div class='clear-btn-container'>";
-                        echo "<button type='submit' class='btn btn-danger clear-btn'>Clear</button>";
+                        echo "<button type='button' class='btn btn-danger clear-btn' id='clearButton'>Clear</button>";
                         echo "<input type='hidden' name='table_name' value='$table_name'>";
                         echo "<input type='hidden' name='table_weeks_name' value='$table_weeks_name'>";
+                        echo "<input type='hidden' name='academic_semester' value='$academic_semesterNav'>";
+                        echo "<input type='hidden' name='subject_name' value='$subject_name'>";
+                        echo "<input type='hidden' name='section' value='$section'>";
+                        echo "<input type='hidden' name='academic_year' value='$academic_year'>";
+                        echo "<input type='hidden' name='semester' value='$semester'>";
                         echo "</div>";
                         echo "</form>";
-                                
+                        
                         // Pagination
                         $limit = 10; // จำนวนแถวต่อหน้า
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -688,26 +800,44 @@ $url_home = '../index.php';
     <!-- Script for toggle Menu -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var sidebarToggle = document.getElementById('sidebarToggle');
-    var body = document.body;
-    var wrapper = document.getElementById('wrapper');
-    var overlay = document.getElementById('overlay');
+        document.addEventListener('DOMContentLoaded', function () {
+            const clearButton = document.getElementById('clearButton');
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            const confirmClearButton = document.getElementById('confirmClearButton');
+            const clearForm = document.getElementById('clear-btn');
 
-    // Toggle sidebar visibility when button is clicked
-    sidebarToggle.addEventListener('click', function () {
-        wrapper.classList.toggle('toggled');
-        overlay.style.display = wrapper.classList.contains('toggled') ? 'block' : 'none';
-    });
+            // เมื่อคลิกปุ่ม Clear จะเปิด Modal ขึ้นมา
+            clearButton.addEventListener('click', function () {
+                confirmModal.show(); // แสดง Modal
+            });
 
-    // Hide sidebar and overlay when overlay is clicked
-    overlay.addEventListener('click', function () {
-        body.classList.remove('sb-sidenav-toggled');
-        wrapper.classList.remove('toggled');
-        overlay.style.display = 'none';
-    })
-});
+            // เมื่อคลิกปุ่ม Confirm ใน Modal จะส่งฟอร์ม
+            confirmClearButton.addEventListener('click', function () {
+                clearForm.submit(); // ส่งฟอร์ม
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var sidebarToggle = document.getElementById('sidebarToggle');
+            var body = document.body;
+            var wrapper = document.getElementById('wrapper');
+            var overlay = document.getElementById('overlay');
 
-</script>
+            // Toggle sidebar visibility when button is clicked
+            sidebarToggle.addEventListener('click', function () {
+                wrapper.classList.toggle('toggled');
+                overlay.style.display = wrapper.classList.contains('toggled') ? 'block' : 'none';
+            });
+
+            // Hide sidebar and overlay when overlay is clicked
+            overlay.addEventListener('click', function () {
+                body.classList.remove('sb-sidenav-toggled');
+                wrapper.classList.remove('toggled');
+                overlay.style.display = 'none';
+            })
+        });
+
+    </script>
 </body>
 </html>

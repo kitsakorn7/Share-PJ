@@ -55,7 +55,7 @@
             background-color: #007bff;
             color: #ffffff;
             border: none;
-            padding: 10px 20px;
+            padding: 6px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
@@ -154,7 +154,7 @@ if ($result->num_rows > 0) {
     echo "    <div class='container-form'>";
     echo "        <h4>Import Students</h4>";
     echo "        <form action='import.php' method='post' enctype='multipart/form-data'>";
-    echo "            <input type='file' name='excel_file' accept='.xls,.xlsx' required>";
+    echo "            <input type='file' id='excelFile' name='excel_file[]' accept='.xls,.xlsx' multiple required>";
     echo "            <input type='hidden' name='table_name' value='" . htmlspecialchars($table_name) . "'>";
     echo "            <button type='submit'>Import</button>";
     echo "        </form>";
@@ -332,25 +332,25 @@ $conn->close();
     });
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var sidebarToggle = document.getElementById('sidebarToggle');
-    var body = document.body;
-    var wrapper = document.getElementById('wrapper');
-    var overlay = document.getElementById('overlay');
+        document.addEventListener('DOMContentLoaded', function () {
+            var sidebarToggle = document.getElementById('sidebarToggle');
+            var body = document.body;
+            var wrapper = document.getElementById('wrapper');
+            var overlay = document.getElementById('overlay');
 
-    // Toggle sidebar visibility when button is clicked
-    sidebarToggle.addEventListener('click', function () {
-        wrapper.classList.toggle('toggled');
-        overlay.style.display = wrapper.classList.contains('toggled') ? 'block' : 'none';
-    });
+            // Toggle sidebar visibility when button is clicked
+            sidebarToggle.addEventListener('click', function () {
+                wrapper.classList.toggle('toggled');
+                overlay.style.display = wrapper.classList.contains('toggled') ? 'block' : 'none';
+            });
 
-    // Hide sidebar and overlay when overlay is clicked
-    overlay.addEventListener('click', function () {
-        body.classList.remove('sb-sidenav-toggled');
-        wrapper.classList.remove('toggled');
-        overlay.style.display = 'none';
-    })
-    });
-</script>
+            // Hide sidebar and overlay when overlay is clicked
+            overlay.addEventListener('click', function () {
+                body.classList.remove('sb-sidenav-toggled');
+                wrapper.classList.remove('toggled');
+                overlay.style.display = 'none';
+            })
+        });
+    </script>
 </body>
 </html>

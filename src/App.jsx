@@ -31,12 +31,13 @@ function App() {
     console.log('failed', res);
   }
 
-  // 192.168.1.39 
+  // สร้าง URL สำหรับการเปลี่ยนเส้นทาง
+  // Test in This Computer (localhost) // Hotspot Hao (172.20.10.10) // WIFI House Tar (192.168.1.39)
   
   const getRedirectUrl = (profile) => {
     const baseUrl = profile.email.endsWith('@gmail.com')
-      ? 'http://192.168.1.39/myproject/learn-reactjs-2024/web_app/admin/admin_home.php' // @gmail
-      : 'http://192.168.1.39/myproject/learn-reactjs-2024/course-app/addtable.php'; // @mail.rmutk.ac.th // Teacher Page
+      ? 'http://localhost/myproject/learn-reactjs-2024/web_app/admin/admin_home.php' // @gmail
+      : 'http://localhost/myproject/learn-reactjs-2024/course-app/tabledetails.php'; // @mail.rmutk.ac.th // Teacher Page
   
     const params = new URLSearchParams({
       user: profile.email,

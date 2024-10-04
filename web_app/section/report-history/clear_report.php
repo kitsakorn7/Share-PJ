@@ -2,10 +2,16 @@
 session_start();
 include('config.php');
 
-$table_report = preg_replace("/[^a-zA-Z_]/", "", "report_daily_" . $_SESSION['subject_name']);
 
 $table_name = isset($_POST['table_name']) ? $_POST['table_name'] : '';
 $table_weeks_name = isset($_POST['table_weeks_name']) ? $_POST['table_weeks_name'] : '';
+$academic_semesterNav = isset($_POST['academic_semester']) ? $_POST['academic_semester'] : '';
+$section = isset($_POST['section']) ? $_POST['section'] : '';
+$subject_name = isset($_POST['subject_name']) ? $_POST['subject_name'] : '';
+$academic_year = isset($_POST['academic_year']) ? $_POST['academic_year'] : '';
+$semester = isset($_POST['semester']) ? $_POST['semester'] : '';
+
+$table_report = "report_daily_" . preg_replace('/\s+/', '_', $subject_name) . "_" . $section . "_" . $academic_year . "_" . $semester;
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -22,7 +28,7 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 
-$url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
+$url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 // Redirect back to the report page
 header("Location: $url_report");
 exit;

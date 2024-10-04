@@ -6,12 +6,12 @@ import face_recognition
 from PIL import Image
 import io
 import os
+import time  # เพิ่มการ import time
 
-# create APT by Flask!
 app = Flask(__name__)
 
-# ฟังก์ชันสำหรับการเชื่อมต่อและจัดการฐานข้อมูล
-def เชื่อมต่อฐานข้อมูล():
+# ฟังก์ชันสำหรับการเชื่อมต่อฐานข้อมูล
+def connect_DB():
     return mysql.connector.connect(
         host="localhost",
         user="root",
@@ -19,44 +19,26 @@ def เชื่อมต่อฐานข้อมูล():
         database="projecta"
     )
 
-# ฟังก์ชันดึงข้อมูลนักเรียนตามตารางที่ส่งมา (เพิ่มความ Dynamic ให้กับ API)
-def ดึงข้อมูลนักเรียน(cursor, table_name):
+# ฟังก์ชันดึงข้อมูลนักเรียน
+def backup_students(cursor, table_name):
     query = f"SELECT first_name, last_name, student_number, image, image1, image2 FROM {table_name}"
     cursor.execute(query)
     return cursor.fetchall()
 
-# ฟังก์ชันสำหรับการจัดการรูปภาพ (เก็บรูปภาพที่ถูกดึงเข้ามา ไปยัง path ที่กำหนด)
-def บันทึกรูปภาพจากBLOB(image_data, file_name):
+# ฟังก์ชันสำหรับบันทึกรูปภาพ
+def backup_imagefromBLOB(image_data, file_name):
     try:
-        # เปิดรูปภาพจากข้อมูล BLOB
         image = Image.open(io.BytesIO(image_data))
-        
-        # กำหนดพาธที่ต้องการบันทึกไฟล์ C:/xampp/htdocs/myproject/learn-reactjs-2024/flask_app/images_fromBLOB/
-        save_path = 'C:/xampp/htdocs/myproject/learn-reactjs-2024/flask_app/images_fromBLOB/BLOB_images_' + file_name # uploaded_ + file_name ชื่อไฟล์
-        
-        # บันทึกรูปภาพ
+        save_path = f'C:/xampp/htdocs/myproject/learn-reactjs-2024/flask_app/images_fromBLOB/BLOB_images_{file_name}'
         image.save(save_path)
-        
-        return save_path  # return พาธของไฟล์ที่บันทึก
+        return save_path
     except Exception as e:
         print(f"เกิดข้อผิดพลาดในการประมวลผลรูปภาพ {file_name}: {e}")
         return None
-    
-# ฟังก์ชันหลักในการตรวจจับใบหน้า!
-@app.route('/recognize', methods=['POST'])
-def recognize_faces():
-    # รับค่าจาก PHP
-    table_name = request.form.get('table_name')
-    
-    # เชื่อมต่อกับฐานข้อมูล
-    conn = เชื่อมต่อฐานข้อมูล()
-    cursor = conn.cursor()
-    
-    # ดึงข้อมูลนักเรียนจากตารางที่ระบุ
-    students = ดึงข้อมูลนักเรียน(cursor, table_name)
-    known_faces = []
 
-    # ประมวลผลใบหน้า
+# ฟังก์ชันในการ learn_facesStudents และสร้าง encoding
+def learn_facesStudents(students):
+    known_faces = []
     for student in students:
         first_name, last_name, student_number, image_data, image1_data, image2_data = student
         
@@ -65,19 +47,15 @@ def recognize_faces():
             f"{first_name}_{last_name}_1.jpg", 
             f"{first_name}_{last_name}_2.jpg"
         ]
-        student_number = student_number
         image_datas = [image_data, image1_data, image2_data]
-
         student_encodings = []
 
-        # อ่านรูปภาพทั้งหมดและแปลงเป็น image_encoding จากนั้นนำมาวิเคราะห์เพื่อสร้าง face_encoding
         for image_data, file_name in zip(image_datas, file_names):
             if image_data:
-                saved_file_path = บันทึกรูปภาพจากBLOB(image_data, file_name)
+                saved_file_path = backup_imagefromBLOB(image_data, file_name)
                 if saved_file_path:
                     encoded_image = face_recognition.load_image_file(saved_file_path)
                     face_encodings = face_recognition.face_encodings(encoded_image)
-                    
                     if face_encodings:
                         student_encodings.append(face_encodings[0])
                     else:
@@ -87,29 +65,89 @@ def recognize_faces():
             else:
                 print(f"ไม่มีข้อมูลรูปภาพสำหรับ: {file_name}")
 
-        # นำค่าของทั้ง 3 รูป มาหาค่าเฉลี่ย และสร้างเป็น encode ชุดเดียว (mean_encoding)
         if student_encodings:
             mean_encoding = np.mean(student_encodings, axis=0).tolist()
-            
-            # เตรียมข้อมูลเพื่อบันทึกลงไฟล์ .json ในรูปแบบดังนี้
             known_faces.append({"Name": f"{first_name} {last_name}", "Student_number": f"{student_number}", "Encoding": mean_encoding})
+    
+    return known_faces
+
+@app.route('/recognize', methods=['POST'])
+def recognize_faces(): # Fn ที่ใช้สำหรับการ Uodate โดยใช้วิธีการดึงข้อมูลเก่ามาหากมี และเขียนข้อมูลของบุคคลที่ยังไม่มีลงไป!
+
+    start_time = time.time()  # บันทึกเวลาเริ่มต้น
+
+    table_name = request.form.get('table_name')
+    conn = connect_DB()
+    cursor = conn.cursor()
+    students = backup_students(cursor, table_name)
+    known_faces = learn_facesStudents(students)
+
+    cursor.close()
+    conn.close()
+
+    json_file_name = f'faces_{table_name}.json'
+    
+    if os.path.exists(json_file_name):
+        with open(json_file_name, 'r', encoding='utf-8') as f:
+            existing_data = json.load(f)
+            existing_known_faces = existing_data.get('known_face_names', [])
+    else:
+        existing_known_faces = []
+
+    existing_dict = {face["Student_number"]: face for face in existing_known_faces}
+
+    for face in known_faces:
+        student_number = face["Student_number"]
+        if student_number not in existing_dict:
+            existing_dict[student_number] = face
+        else:
+            print(f"พบ student_number ซ้ำ: {student_number} จะข้ามการอัปเดตนี้")
+
+    known_face_data = {
+        "total_known_faces": len(existing_dict),
+        "known_face_names": list(existing_dict.values())
+    }
+
+    with open(json_file_name, 'w', encoding='utf-8') as f:
+        json.dump(known_face_data, f, ensure_ascii=False, indent=4)
+
+    end_time = time.time()  # บันทึกเวลาสิ้นสุด
+    processing_time = end_time - start_time  # คำนวณเวลาในการประมวลผล
+
+    print(f"Update use Processing time : {processing_time:.2f} Sec.")  # แสดงเวลาใน terminal
+
+    return jsonify(known_face_data)
+
+@app.route('/recognize_clear', methods=['POST']) 
+def recognize_faces_clear(): # Fn ที่ใช้สำหรับการ del โดยใช้วิธีการเขียนข้อมูล ขึ้นมาใหม่!
+
+    start_time = time.time()  # บันทึกเวลาเริ่มต้น
+
+    table_name = request.form.get('table_name')
+    conn = connect_DB()
+    cursor = conn.cursor()
+    students = backup_students(cursor, table_name)
+    known_faces = learn_facesStudents(students)
 
     cursor.close()
     conn.close()
 
     known_face_data = {
-        "known_face_names": known_faces,
-        "num_known_faces": len(known_faces)
+        "total_known_faces": len(known_faces),
+        "known_face_names": known_faces
     }
 
-    # สร้างชื่อไฟล์ JSON ตามชื่อของตาราง
     json_file_name = f'faces_{table_name}.json'
-    
-    # Write data to faces_{table_name}.json
+
     with open(json_file_name, 'w', encoding='utf-8') as f:
         json.dump(known_face_data, f, ensure_ascii=False, indent=4)
 
-    return jsonify(known_face_data)  # return เป็นรูปแบบ json
+    end_time = time.time()  # บันทึกเวลาสิ้นสุด
+    processing_time = end_time - start_time  # คำนวณเวลาในการประมวลผล
+
+    print(f"Delete use Processing time : {processing_time:.2f} Sec.")  # แสดงเวลาใน terminal
+
+    return jsonify(known_face_data)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

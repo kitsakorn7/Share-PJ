@@ -16,10 +16,10 @@
         </div>
         <br>
         <div class="list-group list-group-flush">
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../../course-app/tabledetails.php" style="font-size: 1rem; ">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../course-app/tabledetails.php" style="font-size: 1rem; ">
                 <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;" ></i> HOME
             </a>
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../../calendar/indext.php" style="font-size: 1rem;">
+            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../../calendar/indext.php" style="font-size: 1rem;">
                 <i class="fas fa-calendar fa-lg" style="font-size: 1.5rem; margin-left: 10px;"></i> CALENDAR
             </a>
         </div>
@@ -36,7 +36,7 @@
                     $shortName = mb_substr($day_of_week, 0, 3);
                     ?>
                             <!-- Link to Section of left menu -->
-			                <a href="../import-students/manage-members.php?subject_id=<?php echo urlencode($course['subject_id']); ?>&academic_semester=<?php echo urlencode($selectedAcademicSemester);?>&section=<?php echo urlencode($course['section']); ?>" class="btn btn-circle">
+			                <a href="./import-students/manage-members.php?subject_id=<?php echo htmlspecialchars($course['subject_id']); ?>&academic_semester=<?php echo urlencode($selectedAcademicSemester); ?>&section=<?php echo urlencode($course['section']); ?>" class="btn btn-circle">
 			                    <div class="circle-icon" style="background-color: <?php echo $color; ?>; margin-left: 9px;">
 			                        <span class="circle-text"><?php echo $shortName; ?></span>
 			                    </div>

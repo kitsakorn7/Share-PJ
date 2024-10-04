@@ -21,6 +21,10 @@ if (isset($_FILES['excel_file']['tmp_name'][0])) {
     $table_name = isset($_POST['table_name']) ? strtolower($_POST['table_name']) : '';
     $subject_id = $_SESSION['subject_id'];
 
+    $section = $_SESSION['section'];
+    $academic_semesterNav = $_SESSION['academic_semester'];
+
+
     // ตรวจสอบว่าค่าของ $table_name ไม่ใช่ค่าว่าง
     if (!empty($table_name)) {
         // วนลูปผ่านไฟล์แต่ละไฟล์ที่ถูกอัปโหลด
@@ -100,7 +104,7 @@ if (isset($_FILES['excel_file']['tmp_name'][0])) {
         }
 
         // รีไดเร็กต์ไปยังหน้า manage-members
-        header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id));
+        header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section));
         exit(); // ให้แน่ใจว่าการทำงานของสคริปต์หยุดหลังจากการรีไดเร็กต์
     } else {
         echo "Error: Table name is required!";

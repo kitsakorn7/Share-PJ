@@ -16,6 +16,10 @@ if ($conn->connect_error) {
 // ดึงข้อมูลจาก POST และทำการตรวจสอบข้อมูล
 $table_name_redirect_url = isset($_POST['table_name']) ? $_POST['table_name'] : '';
 $table_weeks_name = isset($_POST['table_weeks_name']) ? $_POST['table_weeks_name'] : '';
+$academic_semesterNav = isset($_POST['academic_semester']) ? $_POST['academic_semester'] : '';
+$section = isset($_POST['section']) ? htmlspecialchars($_POST['section']) : '';
+$academic_year = isset($_POST['academic_year']) ? htmlspecialchars($_POST['academic_year']) : '';
+$semester = isset($_POST['semester']) ? htmlspecialchars($_POST['semester']) : '';
 $week_date = isset($_POST['week_date']) ? htmlspecialchars($_POST['week_date']) : '';
 $week_number = isset($_POST['week_number']) ? htmlspecialchars($_POST['week_number']) : 0;
 $id = isset($_POST['id']) ? htmlspecialchars($_POST['id']) : 0;
@@ -29,7 +33,7 @@ $total_faces_absent_time = isset($_POST['total_facesAbsentTime']) ? intval($_POS
 $names_absent_time = isset($_POST['faces_absent_time']) ? htmlspecialchars($_POST['faces_absent_time']) : '';
 
 // สร้างชื่อของตาราง (ทำการตรวจสอบชื่อของตาราง)
-$table_name = preg_replace("/[^a-zA-Z_]/", "", "report_daily_" . $subject);
+$table_name = "report_daily_" . preg_replace('/\s+/', '_', $subject) . "_" . $section . "_" . $academic_year . "_" . $semester;
 
 // ฟังก์ชันสำหรับสร้างตารางถ้ายังไม่มี
 function createTableIfNotExists($conn, $table_name) {
@@ -91,7 +95,7 @@ $message = addslashes($message);
 
 // สร้าง URL สำหรับการเปลี่ยนเส้นทาง
 // Test in Computer (localhost) // Hotspot Hao (172.20.10.10) // WIFI House Tar (192.168.1.39)
-$redirect_url = "http://192.168.1.39/myproject/learn-reactjs-2024/web_app/section/attendance-check.php?table_name=$table_name_redirect_url&table_weeks_name=$table_weeks_name&id=$id";
+$redirect_url = "http://localhost/myproject/learn-reactjs-2024/web_app/section/attendance-check.php?table_name=$table_name_redirect_url&table_weeks_name=$table_weeks_name&id=$id&academic_semester=$academic_semesterNav&section=$section";
 
 // ตรวจสอบ URL ที่สร้างขึ้น
 echo $redirect_url;

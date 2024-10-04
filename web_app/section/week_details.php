@@ -25,7 +25,7 @@ $academic_year = $_SESSION['academic_year'];
 $day_of_week = $_SESSION['day_of_week'];
 $start_time = $_SESSION['start_time'];
 $end_time = $_SESSION['end_time'];
-$section = $_SESSION['section'];
+// $section = $_SESSION['section'];
 
 // Get week_number from query string
 $week_number = isset($_GET['week_number']) ? intval($_GET['week_number']) : 0;
@@ -41,6 +41,12 @@ $table_name = isset($_GET['table_name']) ? strtolower($_GET['table_name']) : '';
 
 // Get table_weeks_name from query string (if available)
 $table_weeks_name = isset($_GET['table_weeks_name']) ? strtolower($_GET['table_weeks_name']) : '';
+
+// Get academic_semesterNav from query string (if available)
+$academic_semesterNav = isset($_GET['academic_semester']) ? strtolower($_GET['academic_semester']) : '';
+
+// Get section from query string (if available)
+$section = isset($_GET['section']) ? strtolower($_GET['section']) : '';
 
 // Fetch data for the selected weeks โดยค้นหาข้อมูลจาก week_number
 $sql = "SELECT week_number, week_date, on_time_time, late_time, absent_time FROM $table_weeks_name WHERE week_number = ?";
@@ -62,10 +68,9 @@ if ($result->num_rows > 0) {
 $stmt->close();
 $conn->close();
 
-$url_members = './import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id);
-$url_attendance = './attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_report = './report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_home = './index.php';
+$url_members = './import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_attendance = './attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_report = './report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 
 ?>
 
@@ -308,7 +313,7 @@ $url_home = './index.php';
         <?php include 'component/setting_nav.php';?>
 
         <!-- Include navigation -->
-        <?php include './component/navigation.php';?>
+        <?php include './component/navigation_weekdetails.php';?>
 
             <!-- Menu Bar class "navbar-custom" -->
             <nav class="navbar navbar-expand navbar-custom border-bottom">
@@ -376,6 +381,8 @@ $url_home = './index.php';
                             <input type="file" name="images[]" id="fileInput" accept="image/*" multiple required>
                             <input type="hidden" name="table_name" value="<?php echo htmlspecialchars($table_name); ?>">
                             <input type="hidden" name="table_weeks_name" value="<?php echo htmlspecialchars($table_weeks_name); ?>">
+                            <input type="hidden" name="academic_semester" value="<?php echo htmlspecialchars($academic_semesterNav); ?>">
+                            <input type="hidden" name="section" value="<?php echo htmlspecialchars($section); ?>">
                             <input type="hidden" name="week_date" value="<?php echo htmlspecialchars($week_date); ?>">
                             <input type="hidden" name="subject" value="<?php echo htmlspecialchars($subject); ?>">
                             <input type="hidden" name="week_number" value="<?php echo htmlspecialchars($week_number); ?>">

@@ -5,7 +5,10 @@ include('config.php');
 if (isset($_POST['ids']) && isset($_SESSION['subject_id'])) {
     $ids = $_POST['ids'];
     $table_name = $_POST['table_name']; // รับจาก POST
+
+    $academic_semesterNav = $_SESSION['academic_semester'];
     $subject_id = $_SESSION['subject_id'];
+    $section = $_SESSION['section'];
 
     // เชื่อมต่อฐานข้อมูล
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -40,7 +43,7 @@ if (isset($_POST['ids']) && isset($_SESSION['subject_id'])) {
 
         // เรียก Python API เพื่ออัปเดตไฟล์ .json
         $data = array('table_name' => $table_name);
-        $url = 'http://localhost:5000/recognize'; // URL ของ Python API
+        $url = 'http://localhost:5000/recognize_clear'; // URL ของ Python API
 
         $options = array(
             'http' => array(
@@ -56,7 +59,7 @@ if (isset($_POST['ids']) && isset($_SESSION['subject_id'])) {
             echo "Error calling API to update JSON file.";
         } else {
             // ส่งค่ากลับไปยัง manage-members Page หลังจากเรียกใช้ API เสร็จ
-            header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id) . "&message=Records deleted and IDs updated successfully");
+            header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section) . "&message=Records deleted and IDs updated successfully");
             exit;
         }
     } else {

@@ -28,14 +28,15 @@ $academic_year = $_SESSION['academic_year'];
 $day_of_week = $_SESSION['day_of_week'];
 $start_time = $_SESSION['start_time'];
 $end_time = $_SESSION['end_time'];
-$section = $_SESSION['section'];
 
+$section = isset($_GET['section']) ? strtolower($_GET['section']) : '';
 $table_name = isset($_GET['table_name']) ? strtolower($_GET['table_name']) : '';
 $table_weeks_name = isset($_GET['table_weeks_name']) ? strtolower($_GET['table_weeks_name']) : '';
+$academic_semesterNav = isset($_GET['academic_semester']) ? strtolower($_GET['academic_semester']) : '';
 
-$url_members = './import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id);
-$url_attendance = './attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
-$url_report = './report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name);
+$url_members = './import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_attendance = './attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
+$url_report = './report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 $url_home = './index.php';
 ?>
 
@@ -394,8 +395,10 @@ $url_home = './index.php';
         <!-- End Menu Bar -->
 
 
-<div class="container">
-        <h1 class="mt-4">Edit Week Information</h1>
+<div class="container mt-5">
+        <div class="mt-3">
+            <h1 class="mb-4">Edit Week Information</h1>
+        </div>
         <!-- Display week number for reference -->
         <div class="alert alert-info" role="alert">
             Editing Week Number: <?php echo htmlspecialchars($week_number); ?>
@@ -404,6 +407,8 @@ $url_home = './index.php';
             <input type="hidden" name="week_number" value="<?php echo htmlspecialchars($week_number); ?>">
             <input type="hidden" name="table_name" value="<?php echo htmlspecialchars($table_name); ?>">
             <input type="hidden" name="table_weeks_name" value="<?php echo htmlspecialchars($table_weeks_name); ?>">
+            <input type="hidden" name="academic_semester" value="<?php echo htmlspecialchars($academic_semesterNav); ?>">
+            <input type="hidden" name="section" value="<?php echo htmlspecialchars($section); ?>">
             <div class="mb-3">
                 <label for="week_date" class="form-label">Week Date</label>
                 <input type="date" class="form-control" id="week_date" name="week_date" value="<?php echo htmlspecialchars($data['week_date']); ?>" required>
@@ -420,7 +425,7 @@ $url_home = './index.php';
                 <label for="absent_time" class="form-label">Absent Time</label>
                 <input type="time" class="form-control" id="absent_time" name="absent_time" value="<?php echo htmlspecialchars($data['absent_time']); ?>" required>
             </div>
-            <button type="submit" class="btn btn-primary custom-btn">Update</button>
+            <button type="submit" class="btn btn-primary custom-btn mt-2">Update</button>
             <a href="javascript:window.history.back()" class="btn btn-secondary custom-btn">Cancel</a>
         </form>
     </div>
