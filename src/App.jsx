@@ -32,12 +32,14 @@ function App() {
   }
 
   // สร้าง URL สำหรับการเปลี่ยนเส้นทาง
-  // Test in This Computer (localhost) // Hotspot Hao (172.20.10.10) // WIFI House Tar (192.168.1.39)
-  
   const getRedirectUrl = (profile) => {
-    const baseUrl = profile.email.endsWith('@gmail.com')
-      ? 'http://localhost/myproject/learn-reactjs-2024/web_app/admin/admin_home.php' // @gmail
-      : 'http://localhost/myproject/learn-reactjs-2024/course-app/tabledetails.php'; // @mail.rmutk.ac.th // Teacher Page
+    if (!profile.email.endsWith('@mail.rmutk.ac.th')) {
+      alert("Access is restricted to @mail.rmutk.ac.th users only.");
+      return false; // ปิดการเข้าถึงถ้าไม่ใช่โดเมนที่ต้องการ
+    }
+    
+    // Test in This Computer (localhost) // Hotspot Hao (172.20.10.10) // WIFI House Tar (192.168.1.39)
+    const baseUrl = 'http://localhost/myproject/learn-reactjs-2024/verify_login.php';
   
     const params = new URLSearchParams({
       user: profile.email,
@@ -47,7 +49,7 @@ function App() {
   
     return `${baseUrl}?${params.toString()}`;
   };
-
+  
   return (
     <div className="app-container">
       <div className="container">

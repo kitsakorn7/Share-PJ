@@ -1,8 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root"; // ใส่ชื่อผู้ใช้ MySQL ของคุณ
-$password = ""; // ใส่รหัสผ่าน MySQL ของคุณ
-$dbname = "projecta";
+session_start();
+require "config.php"; // เปลี่ยนเส้นทางไปยังไฟล์การเชื่อมต่อฐานข้อมูลของคุณ
 
 // สร้างการเชื่อมต่อ
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -27,14 +25,19 @@ $sql = "INSERT INTO teachers (teacher_id, faculty, department, first_name, last_
         VALUES ('$teacher_id', '$faculty', '$department', '$first_name', '$last_name', '$first_name_eng', '$last_name_eng', '$email')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "<script>
-        alert('บันทึกข้อมูลสำเร็จ');
-        window.location.href='index.php';
-    </script>";
+    // ถ้าบันทึกสำเร็จ
+    $_SESSION['result_message'] = 'Data updated successfully.';
+    $_SESSION['result_type'] = 'success';
 } else {
-    echo "ข้อผิดพลาด: " . $sql . "<br>" . $conn->error;
+    // ถ้าบันทึกไม่สำเร็จ
+    $_SESSION['result_message'] = 'An error occurred. ' . $conn->error;
+    $_SESSION['result_type'] = 'error';
 }
 
 // ปิดการเชื่อมต่อ
 $conn->close();
+
+// เปลี่ยนเส้นทางกลับไปที่ index.php
+header("Location: index.php");
+exit();
 ?>

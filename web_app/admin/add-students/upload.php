@@ -1,19 +1,17 @@
 <?php
-session_start(); // start session
-require "config.php"; // connect mysql
+session_start();
+require "config.php";
 
-// สร้างฟังก์ชันบีบอัดภาพ
 function compressImage($file) {
-    $imageContent = file_get_contents($file); // อ่านเนื้อหาของไฟล์ภาพ
-    $sourceImage = imagecreatefromstring($imageContent); // สร้างภาพจากสตริงที่มีข้อมูลภาพ
-    ob_start(); //เริ่มการบัฟเฟอร์เอาท์พุท
-    imagejpeg($sourceImage, null, 80); // 80% quality บีบอัดภาพเป็น JPEG ด้วยคุณภาพ 80%
-    $compressedImageContent = ob_get_clean(); // ดึงข้อมูลภาพที่ถูกบีบอัดออกจากบัฟเฟอร์
-    imagedestroy($sourceImage); // ทำลายภาพที่สร้างขึ้นเพื่อเคลียร์หน่วยความจำ
-    return $compressedImageContent; // คืนค่าผลลัพธ์ (รูปภาพที่ถูกบีบอัดแล้ว)
+    $imageContent = file_get_contents($file);
+    $sourceImage = imagecreatefromstring($imageContent);
+    ob_start();
+    imagejpeg($sourceImage, null, 80);
+    $compressedImageContent = ob_get_clean();
+    imagedestroy($sourceImage);
+    return $compressedImageContent;
 }
 
-// ตรวจสอบและจัดการการอัพโหลดภาพ
 if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $image = $_FILES["image"]["tmp_name"];
     $image1 = $_FILES["image1"]["tmp_name"];
@@ -24,24 +22,28 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $Faculty = $_POST["Faculty"];
     $Field_of_study = $_POST["Field_of_study"];
 
-    // เรียกใช้ฟังก์ชั่น compressImage เพื่อใช้บีบอัดภาพ
     $imgContent = compressImage($image);
     $imgContent1 = compressImage($image1);
     $imgContent2 = compressImage($image2);
 
-    // เพิ่มข้อมูลลงในฐานข้อมูล
+ try {
     $stmt = $conn->prepare("INSERT INTO images (image, image1, image2, first_name, last_name, student_number, Faculty, Field_of_study) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$imgContent, $imgContent1, $imgContent2, $first_name, $last_name, $student_number, $Faculty, $Field_of_study]);
 
-    if ($stmt) {
-        $_SESSION["success"] = "Image uploaded successfully.";
-        header("Location: index.php");
+    // ถ้าสำเร็จ ให้แสดงข้อความใน session
+    $_SESSION["success"] = "Image uploaded successfully.";
+} catch (PDOException $e) {
+    // ตรวจสอบว่าเป็นข้อผิดพลาด "Duplicate entry" หรือไม่
+    if ($e->getCode() == 23000) {
+        $_SESSION["error"] = "Error: Student ID ซ้ำ กรุณากรอกข้อมูลใหม่.";
     } else {
-        $_SESSION["error"] = "Failed to upload image. Please try again.";
-        header("Location: index.php");
+        // ข้อผิดพลาดอื่นๆ
+        $_SESSION["error"] = "Failed to upload image: " . $e->getMessage();
     }
-} else {
-    $_SESSION["error"] = "Please select an image file to upload.";
-    header("Location: index.php");
 }
+} else {
+$_SESSION["error"] = "Please select an image file to upload.";
+}
+
+header("Location: index.php");
 ?>

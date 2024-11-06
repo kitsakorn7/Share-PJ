@@ -52,7 +52,7 @@ def faces_recognition():
         best_match_index = np.argmin(face_distances)
 
         # ตรวจสอบว่าระยะห่างที่เจอนั้นใกล้เคียงกับใบหน้าที่รู้จักมากที่สุดหรือไม่
-        if face_distances[best_match_index] < 0.6:  # ค่า threshold ที่กำหนดเพื่อความแม่นยำ
+        if face_distances[best_match_index] < 0.5:  # ค่า threshold ที่กำหนดเพื่อความแม่นยำ
             name = known_face_names[best_match_index]
             stdId = known_face_stdId[best_match_index]
         else:

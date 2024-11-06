@@ -39,7 +39,7 @@ if ($stmt) {
     // Execute the statement
     if ($stmt->execute()) {
         // สร้างการ Redirect ไปยังหน้า index.html พร้อมกับการส่งพารามิเตอร์ success
-        header("Location: index.html?success=true");
+        header("Location: index.php?success=true");
         exit(); // ออกจากสคริปต์เพื่อป้องกันการทำงานต่อ
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;

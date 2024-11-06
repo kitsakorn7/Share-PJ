@@ -20,14 +20,43 @@ if (isset($_FILES['excel_file']['tmp_name'][0])) {
     // รับค่าจากฟอร์มและแปลงเป็นพิมพ์เล็ก
     $table_name = isset($_POST['table_name']) ? strtolower($_POST['table_name']) : '';
     $subject_id = $_SESSION['subject_id'];
-
     $section = $_SESSION['section'];
     $academic_semesterNav = $_SESSION['academic_semester'];
 
-
     // ตรวจสอบว่าค่าของ $table_name ไม่ใช่ค่าว่าง
     if (!empty($table_name)) {
-        // วนลูปผ่านไฟล์แต่ละไฟล์ที่ถูกอัปโหลด
+        // ขั้นตอนที่ 1: เรียก API เพื่อตรวจสอบสถานะ
+        $data = array('table_name' => $table_name);
+        $url = 'http://localhost:5000/recognize'; // URL ของ Python API
+
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data),
+                'timeout' => 5, // กำหนด timeout เป็น 5 วินาที
+            ),
+        );
+
+        $context = stream_context_create($options);
+
+        try {
+            // ลองเรียก API และตรวจสอบว่ามีการตอบสนองหรือไม่
+            $result = @file_get_contents($url, false, $context); // ใช้ @ เพื่อปิดการแสดงข้อผิดพลาด
+            if ($result === FALSE) {
+                // บันทึกข้อความแจ้งเตือนลงใน session หาก API ไม่ตอบสนอง
+                $_SESSION['alert_message'] = "Warning: API server is not responding. No data has been imported.";
+                header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section));
+                exit(); // ยุติการทำงานที่นี่หาก API ไม่ตอบสนอง
+            }
+        } catch (Exception $e) {
+            // จัดการข้อผิดพลาดทั่วไป และบันทึกข้อความแจ้งเตือน
+            $_SESSION['alert_message'] = "Error: Could not connect to API. Exception: " . $e->getMessage();
+            header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section));
+            exit(); // ยุติการทำงานที่นี่หากเกิดข้อผิดพลาด
+        }
+
+        // ขั้นตอนที่ 2: ถ้า API ตอบสนอง ทำการอ่านและบันทึกข้อมูลจากไฟล์ Excel ลงฐานข้อมูล
         foreach ($_FILES['excel_file']['tmp_name'] as $key => $tmp_name) {
             // อ่านไฟล์ Excel แต่ละไฟล์
             $spreadsheet = IOFactory::load($tmp_name);
@@ -40,7 +69,6 @@ if (isset($_FILES['excel_file']['tmp_name'][0])) {
                 $faculty = $row['D'];
                 $field_of_study = $row['E'];
 
-                // ตรวจสอบว่า $student_number มีค่าและไม่เป็นค่าว่าง
                 if (empty($student_number)) {
                     echo "Error: student_number cannot be empty.";
                     continue; // ข้ามแถวนี้ไป
@@ -55,57 +83,42 @@ if (isset($_FILES['excel_file']['tmp_name'][0])) {
                 $check_stmt->close();
 
                 if ($count > 0) {
-                    // ถ้ามีข้อมูลนักศึกษานี้ในฐานข้อมูลแล้ว ให้อัปเดตข้อมูลใหม่
+                    // อัปเดตข้อมูลนักศึกษา
                     $stmt = $conn->prepare("UPDATE $table_name SET first_name = ?, last_name = ?, Faculty = ?, Field_of_study = ? WHERE student_number = ?");
                     $stmt->bind_param("sssss", $first_name, $last_name, $faculty, $field_of_study, $student_number);
                 } else {
-                    // ถ้าไม่มีข้อมูลนักศึกษานี้ในฐานข้อมูล ให้เพิ่มข้อมูลใหม่
+                    // เพิ่มข้อมูลนักศึกษาใหม่
                     $stmt = $conn->prepare("INSERT INTO $table_name (student_number, first_name, last_name, Faculty, Field_of_study) VALUES (?, ?, ?, ?, ?)");
                     $stmt->bind_param("sssss", $student_number, $first_name, $last_name, $faculty, $field_of_study);
                 }
 
-                // รันคำสั่ง SQL
                 $stmt->execute();
                 $stmt->close();
             }
         }
 
-        // อัปเดตข้อมูลรูปภาพโดยการ Join กับตาราง images
+        // อัปเดตข้อมูลรูปภาพ
         $updateStmt = $conn->prepare("
             UPDATE $table_name s
             JOIN images i ON s.student_number = i.student_number
-            SET s.image = i.image,
-                s.image1 = i.image1,
-                s.image2 = i.image2
+            SET s.image = i.image, s.image1 = i.image1, s.image2 = i.image2
             WHERE s.student_number = i.student_number
         ");
         $updateStmt->execute();
         $updateStmt->close();
 
-        $conn->close();
-
-        // เรียก Python API เพื่อประมวลผลและบันทึกใบหน้า
-        $data = array('table_name' => $table_name);
-        $url = 'http://localhost:5000/recognize'; // URL ของ Python API
-
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data),
-            ),
-        );
-        $context  = stream_context_create($options);
+        // ขั้นตอนที่ 3: เรียก API อีกครั้งเพื่อประมวลผลเพิ่มเติม
         $result = file_get_contents($url, false, $context);
 
         if ($result === FALSE) {
-            // จัดการกรณีที่เกิดข้อผิดพลาด
             echo "Error calling API.";
         }
 
+        $_SESSION['alert_message'] = "Data and facial recognition processed successfully.";
+        
         // รีไดเร็กต์ไปยังหน้า manage-members
         header("Location: manage-members.php?table_name=" . urlencode($table_name) . "&subject_id=" . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section));
-        exit(); // ให้แน่ใจว่าการทำงานของสคริปต์หยุดหลังจากการรีไดเร็กต์
+        exit();
     } else {
         echo "Error: Table name is required!";
     }

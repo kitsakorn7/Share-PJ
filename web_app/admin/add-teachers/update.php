@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -28,13 +30,17 @@ $sql = "UPDATE teachers SET teacher_id='$teacher_id', first_name='$first_name', 
         first_name_eng='$first_name_eng', last_name_eng='$last_name_eng', email='$email', 
         faculty='$faculty', department='$department' WHERE id='$id'";
 
-// ทำการอัปเดตข้อมูลในฐานข้อมูล
+// ทำการอัปเดตข้อมูลในฐานข้อมูลและกำหนดข้อความแจ้งเตือน
 if ($conn->query($sql) === TRUE) {
-    echo "<script>alert('อัปเดตข้อมูลสำเร็จ'); window.location.href='display.php';</script>";
+    $_SESSION['modalMessage'] = "Data update successful.";
 } else {
-    echo "ข้อผิดพลาด: " . $conn->error;
+    $_SESSION['modalMessage'] = "An error occurred. " . $conn->error;
 }
 
 // ปิดการเชื่อมต่อ
 $conn->close();
+
+// ส่งผู้ใช้ไปยัง display.php
+header("Location: display.php?showModal=true");
+exit();
 ?>

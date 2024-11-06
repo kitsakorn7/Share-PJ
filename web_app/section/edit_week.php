@@ -38,6 +38,7 @@ $url_members = './import-students/manage-members.php?table_name=' . urlencode($t
 $url_attendance = './attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 $url_report = './report-history/summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 $url_home = './index.php';
+$url_calendar = './calendar/calendar.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 ?>
 
 <!DOCTYPE html>
@@ -429,7 +430,7 @@ $url_home = './index.php';
             <a href="javascript:window.history.back()" class="btn btn-secondary custom-btn">Cancel</a>
         </form>
     </div>
-    <?php include './component/footer_details.php';?>
+    <?php //include './component/footer_details.php';?>
 
 </div>
 </div>

@@ -199,11 +199,9 @@ usort($courses, function ($a, $b) {
         .table-title {
             font-size: 24px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             align-items: center; 
             text-align: center;
-            border-bottom: 2px solid #007bff;
-            border-width: 100%;
             padding-bottom: 10px;
             width: 100%; /* จำกัดความกว้างของหัวตาราง */
         }
@@ -668,9 +666,9 @@ usort($courses, function ($a, $b) {
             <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="./tabledetails.php" style="font-size: 1rem; ">
                 <i class="fas fa-home fa-lg" style="font-size: 1.5rem; margin-left: 10px;" ></i> HOME
             </a>
-            <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../calendar/indext.php" style="font-size: 1rem;">
+            <!-- <a class="list-group-item list-group-item-action list-group-item-light mb-2" href="../calendar/indext.php" style="font-size: 1rem;">
                 <i class="fas fa-calendar fa-lg" style="font-size: 1.5rem; margin-left: 10px;"></i> CALENDAR
-            </a>
+            </a> -->
         </div>
         <hr>
         <div class="responsive-div" style="margin-left: 23px;">ENROLLED</div>

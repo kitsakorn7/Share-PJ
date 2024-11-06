@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('db.php');
 
 // ดึงข้อมูลวิชาพร้อมข้อมูลห้องเรียนและครู
@@ -18,99 +19,110 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Course List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Menu left Sidebar -->
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        body {
-            font-size: 120%;
-            background: #f8f8f8;
+        body {          
+            background: white;
         }
 
         .container h1 {
-            color: black;
-            padding: 10px;
+            color: black;          
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: start;
+        }
+        /* เพิ่ม CSS สำหรับกรอบวิชา */
+        .list-group-items {
+            border: 1px solid #ccc; /* ขอบกรอบ */
+            border-radius: 10px; /* มุมกรอบ */
+            margin-bottom: 15px; /* เว้นระยะห่างระหว่างกรอบ */
+            padding: 15px; /* เพิ่มพื้นที่ภายในกรอบ */
+            font-size: 1rem; /* ปรับขนาดตัวอักษรที่นี่ */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+            font-family: 'Arial', sans-serif;
+        }
+        .list-group-items h5 {
+            font-size: 1rem; /* ขนาดสำหรับหัวเรื่อง */
+            font-family: 'Arial', sans-serif;
+        }
+        #clear_btn {
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+        #search_btn {
+            border-radius: 0px 5px 5px 0px;
         }
     </style>
 </head>
 <body>
 <div class="d-flex" id="wrapper">
-        <!-- Sidebar-->
-        <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light">Project การเช็คชื่อโดยการตรวจจับใบหน้า</div>
-            <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/myproject/index.php">กรอกข้อมูลนักศึกษา</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/ข้อมูลผู้สอน/index.php">กรอกข้อมูลผู้สอน</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/%E0%B8%95%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99/index.php">ตารางสอน</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/หลักสูตร/index.html">หลักสูตร</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/course-app/add.php">กรอกข้อมูลวิชาเรียน</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/room/index.html">กรอกข้อมูลห้องเรียน</a>
-            </div>
+
+<!-- Include sidebar -->
+<?php include('./sidebar.php'); ?>   
+
+<!-- Page content wrapper-->
+<div id="page-content-wrapper">
+
+    <!-- Top navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container-fluid">
+            <button class="btn btn-primary" id="sidebarToggle">Menu</button>
         </div>
-        <!-- Page content wrapper-->
-        <div id="page-content-wrapper">
-            <!-- Top navigation-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active"><a class="nav-link" href="http://localhost/learn-reactjs-2024/startbootstrap-simple-sidebar-gh-pages/startbootstrap-simple-sidebar-gh-pages/index.html">Home</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%AA%E0%B8%AD%E0%B8%99/display.php">เเสดงข้อมูลผู้สอน</a>
-                                    <a class="dropdown-item" href="http://localhost/%E0%B8%95%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99/schedule.php">เเสดงข้อมูลตารางสอน</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/myproject/display.php">เเสดงข้อมูลนักศึกษา</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%E0%B8%AA%E0%B8%B9%E0%B8%95%E0%B8%A3/index.php">เเสดงข้อมูลหลักสูตร</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/course-app/index.php">เเสดงข้อมูลวิชาเรียน</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/room/display_classrooms.php">เเสดงข้อมูลห้องเรียน</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+    </nav>
+    <!-- End Top navigation-->
+     
             <!-- Page content-->
 <div class="container mt-5">
-    <h1 class="mb-4">Course List</h1>
+    <h1>Course List</h1>
+    <hr>
+    <br>
     <!-- เพิ่มฟอร์มสำหรับค้นหา -->
     <form action="search.php" method="GET" class="mb-4">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search Course" name="search">
-            <button type="submit" class="btn btn-outline-secondary">Search</button>
+            <button class="btn btn-outline-secondary" id="search_btn" type="submit">Search</button>
+            <a href="./index.php" class="btn btn-outline-danger" id="clear_btn">Clear search</a>
         </div>
     </form>
-    <a href="add.php" class="btn btn-primary mb-4">Add New Course</a>
+    <a href="add.php" class="btn btn-success mb-4">Add New Course</a>
     <ul class="list-group">
         <?php
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "<li class='list-group-item d-flex justify-content-between align-items-center'>
+                echo "<li class='list-group-items d-flex justify-content-between align-items-center'>
                 <div>
-                    <h5 class='mb-0'><strong>Subject Name:</strong> " . htmlspecialchars($row["subject_name"]) . "</h5>
-                    <h5 class='mb-0'><strong>Subject ID:</strong> " . htmlspecialchars($row["subject_id"]) . "</h5>
-                     <p class='mb-0'><strong>Course Name:</strong> " . htmlspecialchars($row["course_name"]) . "</p>
-                     <p class='mb-0'><strong>Theory Hours:</strong> " . htmlspecialchars($row["theory_hours"]) . "</p>
-                     <p class='mb-0'><strong>Practical Hours:</strong> " . htmlspecialchars($row["practical_hours"]) . "</p>
-                     <p class='mb-0'><strong>Semester:</strong> " . htmlspecialchars($row["semester"]) . "</p>
-                     <p class='mb-0'><strong>Academic Year:</strong> " . htmlspecialchars($row["academic_year"]) . "</p>
-                     <p class='mb-0'><strong>Day of Week:</strong> " . htmlspecialchars($row["day_of_week"]) . " <strong>Start Time:</strong>" . htmlspecialchars($row["start_time"]) . " <strong>End Time:</strong>" . htmlspecialchars($row["end_time"]) . "</p>
-                     <p class='mb-0'><strong>Section:</strong> " . htmlspecialchars($row["section"]) . "</p>
-                     <p class='mb-0'><strong>Classroom:</strong> " . ($row["room_number"] ? htmlspecialchars($row["room_number"]) . ", Floor: " . htmlspecialchars($row["floor"]) . ", Building: " . htmlspecialchars($row["building"]) : 'N/A') . "</p>
-                     <p class='mb-0'><strong>Teacher :</strong> " . htmlspecialchars($row["teacher_id"]) . "</p>
-                     <p class='mb-0'><strong>Teacher 2:</strong> " . htmlspecialchars($row["teacher2_id"]) . "</p>
-                     <p class='mb-0'><strong>Teacher 3:</strong> " . htmlspecialchars($row["teacher3_id"]) . "</p>
-                 </div>
+                    <h5 class='mb-2'>Subject Name: " . htmlspecialchars($row["subject_name"]) . "</h5>
+                    <h5 class='mb-2'>Subject ID: " . htmlspecialchars($row["subject_id"]) . "</h5>
+                    <p class='mb-2'>Course Name: " . htmlspecialchars($row["course_name"]) . "</p>
+                    <p class='mb-2'>Theory Hours: " . htmlspecialchars($row["theory_hours"]) . "</p>
+                    <p class='mb-2'>Practical Hours: " . htmlspecialchars($row["practical_hours"]) . "</p>
+                    <p class='mb-2'>Semester: " . htmlspecialchars($row["semester"]) . "</p>
+                    <p class='mb-2'>Academic Year: " . htmlspecialchars($row["academic_year"]) . "</p>
+                    <p class='mb-2'>Day of Week: " . htmlspecialchars($row["day_of_week"]) . " | Start Time:" . htmlspecialchars($row["start_time"]) . " | End Time:" . htmlspecialchars($row["end_time"]) . "</p>
+                    <p class='mb-2'>Section: " . htmlspecialchars($row["section"]) . "</p>
+                    <p class='mb-2'>Classroom: " . ($row["room_number"] ? htmlspecialchars($row["room_number"]) . ", Floor: " . htmlspecialchars($row["floor"]) . ", Building: " . htmlspecialchars($row["building"]) : 'N/A') . "</p>
+                    <p class='mb-2'>Teacher : " . htmlspecialchars($row["teacher_id"]) . "</p>
+                    <p class='mb-2'>Teacher 2: " . htmlspecialchars($row["teacher2_id"]) . "</p>
+                    <p class='mb-2'>Teacher 3: " . htmlspecialchars($row["teacher3_id"]) . "</p>
+                </div>
                  <div>
-                            <a href='edit.php?id=" . $row["id"] . "' class='btn btn-secondary btn-sm me-2'>Edit</a>
-                            <a href='delete.php?id=" . $row["id"] . "' class='btn btn-danger btn-sm'>Delete</a>
+                            <a href='edit.php?id=" . $row["id"] . "' class='btn btn-warning'>Edit</a>
+                            <button type='button' class='btn btn-danger delete-btn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-id='" . $row["id"] . "'>Delete</button>
                         </div>
                     </li>";
             }
@@ -122,10 +134,76 @@ $result = $conn->query($sql);
 </div>
 </div>
 </div>
+
+<!-- Modal Popup -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="uploadModalLabel">Update result</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modalMessage"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+                </form>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      Are you sure you want to delete this record?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="#" id="confirmDelete" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script>
+            // Script to show modal based on session status
+         <?php if (isset($_SESSION["success"])) { ?>
+            var modalMessage = "<?php echo $_SESSION['success']; ?>";
+            document.getElementById('modalMessage').textContent = modalMessage;
+            var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+            uploadModal.show();
+            <?php unset($_SESSION["success"]); ?>
+        <?php } elseif (isset($_SESSION["error"])) { ?>
+            var modalMessage = "<?php echo $_SESSION['error']; ?>";
+            document.getElementById('modalMessage').textContent = modalMessage;
+            var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+            uploadModal.show();
+            <?php unset($_SESSION["error"]); ?>
+        <?php } ?>
+            
+            var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget; // ปุ่มที่กดเพื่อเปิด modal
+      var id = button.getAttribute('data-id'); // รับ id จาก data-id
+
+      // อัปเดตลิงก์ในปุ่มลบใน modal
+      var confirmDelete = document.getElementById('confirmDelete');
+      confirmDelete.setAttribute('href', 'delete.php?id=' + id);
+    });
+        </script>
 </body>
 </html>
 

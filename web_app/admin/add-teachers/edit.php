@@ -1,103 +1,72 @@
+<?php
+session_start();
+require "config.php";
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>แก้ไขข้อมูลผู้สอน</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Manage Student</title>
+    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Menu left Sidebar -->
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-        }
         .container {
-            width: 50%;
+            max-width: 1000px;
             margin: 50px auto;
-            background-color: white;
             padding: 20px;
-            border-radius: 8px;
+            background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: start;
         }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            display: block;
-            margin: 15px 0 5px;
-            color: #555;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        input[type="file"],
-        select,
-        textarea {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+
     </style>
 </head>
 <body>
-<div class="d-flex" id="wrapper">
-        <!-- Sidebar-->
-        <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light">Project การเช็คชื่อโดยการตรวจจับใบหน้า</div>
-            <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/myproject/index.php">กรอกข้อมูลนักศึกษา</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/ข้อมูลผู้สอน/index.php">กรอกข้อมูลผู้สอน</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/%E0%B8%95%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99/index.php">ตารางสอน</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/หลักสูตร/index.html">หลักสูตร</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/course-app/add.php">กรอกข้อมูลวิชาเรียน</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="http://localhost/learn-reactjs-2024/room/index.html">กรอกข้อมูลห้องเรียน</a>
-            </div>
-        </div>
+    <div class="d-flex" id="wrapper">
+
+        <!-- Include sidebar -->
+        <?php include('./sidebar.php'); ?>   
+
         <!-- Page content wrapper-->
         <div id="page-content-wrapper">
+
             <!-- Top navigation-->
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                 <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active"><a class="nav-link" href="http://localhost/learn-reactjs-2024/startbootstrap-simple-sidebar-gh-pages/startbootstrap-simple-sidebar-gh-pages/index.html">Home</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%AA%E0%B8%AD%E0%B8%99/display.php">เเสดงข้อมูลผู้สอน</a>
-                                    <a class="dropdown-item" href="http://localhost/%E0%B8%95%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99/schedule.php">เเสดงข้อมูลตารางสอน</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/myproject/display.php">เเสดงข้อมูลนักศึกษา</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%E0%B8%AA%E0%B8%B9%E0%B8%95%E0%B8%A3/index.php">เเสดงข้อมูลหลักสูตร</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/course-app/index.php">เเสดงข้อมูลวิชาเรียน</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/room/display_classrooms.php">เเสดงข้อมูลห้องเรียน</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <button class="btn btn-primary" id="sidebarToggle">Menu</button>
                 </div>
             </nav>
-            <!-- Page content-->
-    <div class="container">
-        <h1>แก้ไขข้อมูลผู้สอน</h1>
+            <!-- End Top navigation-->
+             
+           <!-- Page content-->
+           <div class="container mt-5">
+                <h1 class="mt-3">Edit Manage-Teacher</h1>
+                <?php if (isset($_SESSION["success"])) { ?>
+                    <div class="alert alert-success">
+                        <?php 
+                            echo $_SESSION["success"];
+                            unset($_SESSION["success"]);
+                        ?>
+                    </div>
+                <?php } ?>
+                <?php if (isset($_SESSION["error"])) { ?>
+                    <div class="alert alert-danger">
+                        <?php 
+                            echo $_SESSION["error"];
+                            unset($_SESSION["error"]);
+                        ?>
+                    </div>
+                <?php } ?>
+                <hr>
+                <br>
         <?php
         $servername = "localhost";
         $username = "root";
@@ -124,38 +93,71 @@
         <form action="update.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo $teacher['id']; ?>">
 
-            <label for="teacher_id">รหัสประจำตัว:</label>
-            <input type="text" id="teacher_id" name="teacher_id" value="<?php echo $teacher['teacher_id']; ?>" required>
+            <div class="mb-3">
+                        <label for="teacher_id">Teacher ID:<span style="color: red;">*</span></label>
+                        <input type="text" id="teacher_id" class="form-control" name="teacher_id" value="<?php echo $teacher['teacher_id']; ?>" maxlength="12" required oninput="validateTeacherId(this)">
+                        <div id="teacherIdError" style="color: red; display: none;">Please enter the complete 12-digit identification number.</div>
+                    </div>
 
-            <label for="first_name">ชื่อ:</label>
-            <input type="text" id="first_name" name="first_name" value="<?php echo $teacher['first_name']; ?>" required>
+            <div class="mb-3">
+                        <label for="first_name">First Name:<span style="color: red;">*</span></label>
+                        <input type="text" id="first_name" class="form-control" name="first_name" value="<?php echo $teacher['first_name']; ?>" required>
+                    </div>
+            
+                    <div class="mb-3">
+                        <label for="last_name">Last Name:<span style="color: red;">*</span></label>
+                        <input type="text" id="last_name" class="form-control" name="last_name" value="<?php echo $teacher['last_name']; ?>" required>
+                    </div>
+            
+                    <div class="mb-3">
+                        <label for="first_name_eng">First Name (in English):<span style="color: red;">*</span></label>
+                        <input type="text" id="first_name_eng" class="form-control" name="first_name_eng" value="<?php echo $teacher['first_name_eng']; ?>" required oninput="validateEnglishLetters(this)">
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="last_name_eng">Last Name (in English):<span style="color: red;">*</span></label>
+                        <input type="text" id="last_name_eng" class="form-control" name="last_name_eng" value="<?php echo $teacher['last_name_eng']; ?>" required oninput="validateEnglishLetters(this)">
+                    </div>
+            
+                    <div class="mb-3">
+                        <label for="email">E-mail:<span style="color: red;">*</span></label>
+                        <input type="email" id="email" class="form-control" name="email" value="<?php echo $teacher['email']; ?>" required>
+                    </div>
 
-            <label for="last_name">นามสกุล:</label>
-            <input type="text" id="last_name" name="last_name" value="<?php echo $teacher['last_name']; ?>" required>
+                    <div class="mb-3">
+                        <label for="faculty">Faculty:<span style="color: red;">*</span></label>
+                        <input type="text" id="faculty" class="form-control" name="faculty" value="<?php echo $teacher['faculty']; ?>" required>
+                    </div>
 
-            <label for="first_name_eng">ชื่ออังกฤษ:</label>
-            <input type="text" id="first_name_eng" name="first_name_eng" value="<?php echo $teacher['first_name_eng']; ?>" required>
+                    <div class="mb-3">
+                        <label for="department">Faculty:<span style="color: red;">*</span></label>
+                        <input type="text" id="department" class="form-control" name="department" value="<?php echo $teacher['department']; ?>" required>
+                    </div>
 
-            <label for="last_name_eng">นามสกุลอังกฤษ:</label>
-            <input type="text" id="last_name_eng" name="last_name_eng" value="<?php echo $teacher['last_name_eng']; ?>" required>
-
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" value="<?php echo $teacher['email']; ?>">
-
-            <label for="faculty">คณะ:</label>
-            <input type="text" id="faculty" name="faculty" value="<?php echo $teacher['faculty']; ?>" required>
-
-            <label for="department">สาขาวิชา:</label>
-            <input type="text" id="department" name="department" value="<?php echo $teacher['department']; ?>" required>
-
-            <input type="submit" value="อัปเดต">
+            <input type="submit" class="btn btn-success" value="Update">
         </form>
     </div>
     </div>
 </div>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="../startbootstrap-simple-sidebar-gh-pages\startbootstrap-simple-sidebar-gh-pages/js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scriptss.js"></script>
+    <script>
+function validateTeacherId(input) {
+    // กรองเฉพาะตัวเลข
+    input.value = input.value.replace(/\D/g, '');
+
+    // ตรวจสอบความยาวของรหัสประจำตัว
+    if (input.value.length < 12) {
+        document.getElementById('teacherIdError').style.display = 'block';
+    } else {
+        document.getElementById('teacherIdError').style.display = 'none';
+    }
+}
+
+function validateEnglishLetters(input) {
+    // กรองเฉพาะตัวอักษรภาษาอังกฤษ (a-z, A-Z) และช่องว่าง
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+}
+</script>
 </body>
 </html>

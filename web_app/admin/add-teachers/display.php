@@ -1,47 +1,38 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ข้อมูลผู้สอน</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Teacher List</title>
+    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Menu left Sidebar -->
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
+        body { 
+            background-color: white;         
         }
         .container {
-            width: 80%;
+            max-width: 1000px;
             margin: 50px auto;
-            background-color: white;
             padding: 20px;
-            border-radius: 8px;
+            background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: start;
         }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+        
         .search-container {
             text-align: center;
             margin-bottom: 20px;
         }
-        .search-container input[type="text"] {
-            padding: 10px;
-            width: 50%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .search-container input[type="submit"] {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -49,7 +40,7 @@
         th, td {
             padding: 10px;
             border: 1px solid #ddd;
-            text-align: left;
+            text-align: center;
         }
         th {
             background-color: #4CAF50;
@@ -58,10 +49,7 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .photo {
-            width: 100px;
-            height: auto;
-        }
+        
         .edit-btn, .delete-btn {
             background-color: #4CAF50;
             color: white;
@@ -71,6 +59,13 @@
         }
         .delete-btn {
             background-color: #f44336;
+        }
+        #clear_btn {
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+        #search_btn {
+            border-radius: 0px 5px 5px 0px;
         }
     </style>
 </head>
@@ -83,51 +78,36 @@
         <!-- Page content wrapper-->
         <div id="page-content-wrapper">
             <!-- Top navigation-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active"><a class="nav-link" href="http://localhost/learn-reactjs-2024/startbootstrap-simple-sidebar-gh-pages/startbootstrap-simple-sidebar-gh-pages/index.html">Home</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%AA%E0%B8%AD%E0%B8%99/display.php">เเสดงข้อมูลผู้สอน</a>
-                                    <a class="dropdown-item" href="http://localhost/%E0%B8%95%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%AD%E0%B8%99/schedule.php">เเสดงข้อมูลตารางสอน</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/myproject/display.php">เเสดงข้อมูลนักศึกษา</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%E0%B8%AA%E0%B8%B9%E0%B8%95%E0%B8%A3/index.php">เเสดงข้อมูลหลักสูตร</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/course-app/index.php">เเสดงข้อมูลวิชาเรียน</a>
-                                    <a class="dropdown-item" href="http://localhost/learn-reactjs-2024/room/display_classrooms.php">เเสดงข้อมูลห้องเรียน</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container-fluid">
+            <button class="btn btn-primary" id="sidebarToggle">Menu</button>
+        </div>
+    </nav>
+    <!-- End Top navigation-->
+
             <!-- Page content-->
-            <br>
-            <h1 style="text-align: left; margin-left: 30px;">Teacher List</h1>
+            <div class="container mt-5">
+            <h1 style="text-align: left;">Teacher List</h1>
             <hr>
             <br>
             <div class="search-container">
             <form action="display.php" method="get">
-                <input type="text" name="search" placeholder="ค้นหาข้อมูลผู้สอน" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <input type="submit" value="ค้นหา">
+            <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for teachers information" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                        <button class="btn btn-outline-secondary" id="search_btn" type="submit">Search</button>
+                        <a href="./display.php" class="btn btn-outline-danger" id="clear_btn">Clear search</a>  
+                    </div>
             </form>
         </div>
-    <div class="container">
-        <h1>Table</h1>
         <table>
             <thead>
                 <tr>
-                    <th>รหัสประจำตัว</th>
-                    <th>ชื่อ-นามสกุล</th>
-                    <th>คณะ</th>
-                    <th>สาขาวิชา</th>
-                    <th>อีเมล</th>
-                    <th>การกระทำ</th>
+                    <th>Teacher ID</th>
+                    <th>First Name-Last Name</th>
+                    <th>Faculty</th>
+                    <th>Field of Study</th>
+                    <th>E-mail</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -174,8 +154,8 @@
                         echo "<td>" . $row["department"] . "</td>";
                         echo "<td>" . htmlspecialchars($row["email"]) . "</td>";
                         echo "<td>
-                                <a href='edit.php?id=" . $row["id"] . "' class='edit-btn'>แก้ไข</a>
-                                <a href='delete.php?id=" . $row["id"] . "' class='delete-btn' onclick='return confirm(\"คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?\")'>ลบ</a>
+                                <a href='edit.php?id=" . $row["id"] . "' class='btn btn-warning'>Edit</a>
+                                <button type='button' class='btn btn-danger delete-btn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-id='" . $row["id"] . "'>Delete</button>
                               </td>";
                         echo "</tr>";
                     }
@@ -191,9 +171,76 @@
     </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update result</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <?php
+        // แสดงข้อความจาก update.php
+        if (isset($_SESSION['modalMessage'])) {
+            echo $_SESSION['modalMessage'];
+            unset($_SESSION['modalMessage']); // ลบค่าเพื่อไม่ให้แสดงอีกครั้งเมื่อรีเฟรชหน้า
+        }
+        ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      Are you sure you want to delete this record?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="#" id="confirmDelete" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="../startbootstrap-simple-sidebar-gh-pages\startbootstrap-simple-sidebar-gh-pages/js/scripts.js"></script>
+        <script src="js/scriptss.js"></script>
+        <script>
+            // แสดง modal หาก showModal ถูกตั้งค่าเป็น true
+  <?php if (isset($_GET['showModal']) && $_GET['showModal'] == 'true'): ?>
+    var myModal = new bootstrap.Modal(document.getElementById('resultModal'));
+    myModal.show();
+
+    // ลบพารามิเตอร์ showModal ออกจาก URL หลังจากแสดง Modal เสร็จแล้ว
+    const url = new URL(window.location.href);
+    url.searchParams.delete('showModal');
+    window.history.replaceState({}, document.title, url.toString());
+  <?php endif; ?>
+
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget; // ปุ่มที่กดเพื่อเปิด modal
+      var id = button.getAttribute('data-id'); // รับ id จาก data-id
+
+      // อัปเดตลิงก์ในปุ่มลบใน modal
+      var confirmDelete = document.getElementById('confirmDelete');
+      confirmDelete.setAttribute('href', 'delete.php?id=' + id);
+    });
+</script>
 </body>
 </html>

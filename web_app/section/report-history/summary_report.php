@@ -29,7 +29,7 @@ $table_report = preg_replace('/[^a-zA-Z0-9_]/', '_', $table_report);
 $url_members = '../import-students/manage-members.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 $url_attendance = '../attendance-check.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 $url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
-
+$url_calendar = '../calendar/calendar.php?table_name=' . urlencode($table_name) . '&subject_id=' . urlencode($subject_id) . '&table_weeks_name=' . urlencode($table_weeks_name) . '&academic_semester=' . urlencode($academic_semesterNav) . '&section=' . urlencode($section);
 ?>
 
 <!DOCTYPE html>
@@ -642,7 +642,7 @@ $url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&ta
             </div>
 
             <div class="container-schedule" style="text-align: center;">
-                <h2>Report Attendance</h2>
+                <h2>History Attendance</h2>
             </div>
 
             <div class="container-weeks">
@@ -791,7 +791,7 @@ $url_report = './summary_report.php?table_name=' . urlencode($table_name) . '&ta
             </div>
 
             <!-- Include footer -->
-            <?php include('../component/footer_details.php'); ?>
+            <?php //include('../component/footer_details.php'); ?>
 
         </div>
     </div>

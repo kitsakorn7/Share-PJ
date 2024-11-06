@@ -94,7 +94,7 @@
     </style>
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
+        <div class="d-flex" id="wrapper">
         <!-- Include Setting navigation -->
         <?php include '../component/setting_nav.php';?>
 
@@ -269,40 +269,40 @@ $conn->close();
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
                     <script>
-                    document.getElementById('select-all').onclick = function() {
-                        var checkboxes = document.getElementsByName('ids[]');
-                        for (var checkbox of checkboxes) {
-                            checkbox.checked = this.checked;
-                        }
-                    }
-
-                    document.getElementById('deleteForm').onsubmit = function(event) {
-                        event.preventDefault(); // หยุดการส่งฟอร์มโดยอัตโนมัติ
-                        var checkboxes = document.getElementsByName('ids[]');
-                        var selected = false;
-                        for (var checkbox of checkboxes) {
-                            if (checkbox.checked) {
-                                selected = true;
-                                break;
+                        document.getElementById('select-all').onclick = function() {
+                            var checkboxes = document.getElementsByName('ids[]');
+                            for (var checkbox of checkboxes) {
+                                checkbox.checked = this.checked;
                             }
                         }
 
-                        if (!selected) {
-                            // แสดง modal แจ้งเตือนกรณีไม่มีการเลือก
-                            var noSelectionModal = new bootstrap.Modal(document.getElementById('noSelectionModal'));
-                            noSelectionModal.show();
-                            return false;
+                        document.getElementById('deleteForm').onsubmit = function(event) {
+                            event.preventDefault(); // หยุดการส่งฟอร์มโดยอัตโนมัติ
+                            var checkboxes = document.getElementsByName('ids[]');
+                            var selected = false;
+                            for (var checkbox of checkboxes) {
+                                if (checkbox.checked) {
+                                    selected = true;
+                                    break;
+                                }
+                            }
+
+                            if (!selected) {
+                                // แสดง modal แจ้งเตือนกรณีไม่มีการเลือก
+                                var noSelectionModal = new bootstrap.Modal(document.getElementById('noSelectionModal'));
+                                noSelectionModal.show();
+                                return false;
+                            }
+
+                            // แสดง modal ยืนยันการลบ
+                            var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                            confirmationModal.show();
                         }
 
-                        // แสดง modal ยืนยันการลบ
-                        var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-                        confirmationModal.show();
-                    }
-
-                    // เมื่อคลิกปุ่ม Delete ใน modal
-                    document.getElementById('confirmDeleteBtn').onclick = function() {
-                        document.getElementById('deleteForm').submit(); // ส่งฟอร์ม
-                    }
+                        // เมื่อคลิกปุ่ม Delete ใน modal
+                        document.getElementById('confirmDeleteBtn').onclick = function() {
+                            document.getElementById('deleteForm').submit(); // ส่งฟอร์ม
+                        }
                     </script>
 
             <!-- Include footer -->
